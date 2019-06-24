@@ -1,17 +1,29 @@
 export DockerUsername="foo" #replace foo in quotes with your username, retain the quotation marks.
+export lpass="~/qimr_mtb/lpass.txt" #path to .txt containing linux password
+export dpass="~/qimr_mtb/dpass.txt" #path to .txt containing docker password
 
 #Checks if Docker is installed
+echo "Checking if Docker is installed"
 dockercheck1=$(docker run hello world | grep "working correctly" | wc -l)
 if [ "$dockercheck1 -ge 1" ]; then
   echo "Docker appears to be installed, proceeding."
 else
-  echo "Docker not found, attempting automatic installation."
-  sudo apt-get -y update
-  sudo apt-get -y install docker-ce docker-ce-cli containerd.io
+  echo "Docker not found, attempting installation."
+  cat $lpass | sudo -S apt-get -y update
+  cat $lpass | sudo -S apt-get -y install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+  cat $lpass | sudo -S curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+  cat $lpass | sudo -S add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+  cat $lpass | sudo -S apt-get -y update
+  cat $lpass | sudo -S apt-get -y install docker-ce docker-ce-cli containerd.io
+  echo "sudo apt-get -y install apt-transport-https ca-certificates curl gnupg-agent software-properties-common"
+  echo "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
   echo "sudo apt-get -y update"
   echo "sudo apt-get -y install docker-ce docker-ce-cli containerd.io"
   #Checks for successful installation
-  dockercheck2=$(docker run hello world | grep 'working\|correctly' | wc -l)
+  dockercheck2=$(docker run hello world | grep "working correctly" | wc -l)
   if [ "$dockercheck2 -ge 1" ]; then
     echo "Docker has been successfully installed, proceeding."
   else
@@ -20,12 +32,13 @@ else
   fi
 fi
 
-#Logging in to docker using username declared at the top and password from my_password.txt
-dockerlogin=$(cat ~/my_password.txt | docker login --username $DockerUsername --password-stdin | grep "Succeeded" | wc -l)
+#Log in to docker using username declared at the top and password from dpass.txt
+echo "Logging in to Docker with supplied credentials."
+dockerlogin=$(cat $dpass | docker login --username $DockerUsername --password-stdin | grep "Succeeded" | wc -l)
 if [ "$dockerlogin -ge 1"]; then
   echo "Logged in to Docker successfully."
 else
-  echo "Log in failed. Aborting. Please doublecheck declared username and my_password.txt. Case-sensitive."
+  echo "Log in failed. Aborting. Please doublecheck declared username and dpass.txt. Case-sensitive."
   exit 1
 fi
 
