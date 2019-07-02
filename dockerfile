@@ -8,12 +8,16 @@ EXPOSE 80 443 22 9418
 #RUN git config --global url.https://github.com/.insteadOf git://github.com/
 
 RUN apt-get -y update
-ENV IMAGE_PACKAGES="zlib1g-dev libz-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libssl-dev libncurses5-dev gsalib build-essential make g++ gcc perl python3-pip ggplot2 reshape gplots autoconf automake jq ruby apache2 bwa gzip kalign tar wget vim bedtools r-base libopenblas-base"
+ENV IMAGE_PACKAGES="zlib1g-dev libz-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libssl-dev libncurses5-dev gsalib libopenblas-base build-essential make g++ gcc perl python3-pip ggplot2 reshape gplots autoconf automake r-base jq ruby apache2 bwa gzip kalign tar wget vim bedtools"
 RUN apt-get -y install $IMAGE_PACKAGES
 
 #Install Perl CGI module, it's not included into the standard distribution anymore
 RUN curl -L https://cpanmin.us | perl - App::cpanminus
 RUN cpanm install CGI
+
+#Install git lfs, required for some other installations (mostly the gradlew stuff)
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
+RUN apt install -y git-lfs
 
 #Install Samtools
 RUN git clone https://github.com/samtools/htslib.git
@@ -48,7 +52,7 @@ RUN ./gradlew bundle
 RUN ./gradlew clean
 RUN cd /ls
 
-#Install IGV FAILED https://github.com/igvteam/igv/issues/664
+#Install IGV Possible Debug. My test VM crashes at ./gradlew test but no errors thrown, so assumed working.
 RUN git clone https://github.com/igvteam/igv.git
 RUN cd igv/
 RUN ./gradlew createDist
@@ -103,6 +107,12 @@ RUN make
 RUN make install
 RUN cd /
 
+#Install Prodigal (Prerequisite for Circlator)
+RUN git clone https://github.com/hyattpd/Prodigal.git
+RUN cd Prodigal
+RUN make install
+RUN cd /
+
 #Install Kraken2
 RUN git clone https://github.com/DerrickWood/kraken2.git
 RUN cd kraken2/
@@ -142,19 +152,70 @@ RUN mv snpEff* snpEff
 #Optional: The database directory can be changed in snpEff.config. Default is in the installation folder (./data/).
 #See: http://snpeff.sourceforge.net for more information
 
-#Install Circos (needs to be periodically updated)
-RUN wget -O /Circos.tgz http://circos.ca/distribution/circos-0.69-8.tgz
+#Install Circos
+RUN wget -O /Circos.tgz http://circos.ca/distribution/circos-current.tgz
 RUN tar -zxvf Circos.tgz
 RUN rm Circos.tgz
 
-#Install Miniconda for python 2.7 (required for MTBseq) WIP install python3 for mykrobe
+#Install Miniconda for python 2.7 (required for MTBseq)
 RUN wget -O /miniconda.sh https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh
 RUN bash /miniconda.sh -b -p -f /miniconda/
 RUN export PATH=$Path:/miniconda/bin/
 RUN cd /
 
-#Install MTBseq FAILED due to GATK issue
-RUN conda install -c -y bioconda mtbseq
+#Install MTBseq #Almost done check github issue
+RUN conda install -y -c bioconda mtbseq
+RUN wget -O /gatk.zip https://github.com/broadinstitute/gatk/releases/download/4.1.2.0/gatk-4.1.2.0.zip
 
-#Install Mykrobe
+#Install Mykrobe #Problem, check github issue
 RUN conda install -y -c bioconda mykrobe
+
+#Install Pilon #Problem, check github issue
+RUN curl -s "https://api.github.com/repos/broadinstitute/pilon/releases/latest" | jq --arg PLATFORM_ARCH "jar" -r '.assets[] | select(.name | endswith($PLATFORM_ARCH)).browser_download_url' | xargs curl -L -o /pilon.jar
+
+#Install VCFtools
+RUN git clone https://github.com/vcftools/vcftools.git
+RUN cd vcftools
+RUN ./autogen.sh
+RUN ./configure
+RUN make
+RUN make install
+RUN cd /
+
+#Install trimAl
+RUN git clone https://github.com/scapella/trimal.git
+RUN cd trimal/source
+RUN make
+RUN export PATH=$Path:/trimal/source/
+RUN cd /
+
+#Install Racon
+RUN git clone --recursive https://github.com/isovic/racon.git racon
+RUN cd racon
+RUN mkdir build
+RUN cd build
+RUN cmake -DCMAKE_BUILD_TYPE=Release ..
+RUN make
+RUN make install
+RUN cd /
+
+#Install Canu
+RUN curl -s "https://api.github.com/repos/marbl/canu/releases/latest" | jq --arg PLATFORM_ARCH "Linux-amd64.tar.xz" -r '.assets[] | select(.name | endswith($PLATFORM_ARCH)).browser_download_url' | xargs curl -L -o /canu.tar.xz
+RUN tar -zJf canu.tar.xz
+RUN mv canu-* canu
+RUN rm canu.tar.xz
+RUN export PATH=$Path:/canu/Linux-amd64/bin
+RUN cd /
+
+#Install Circlator #Problem, MUMmer dependency
+RUN pip3 install circlator && cd /
+
+#Install QUAST
+RUN conda install -y -c bioconda quast && cd /
+
+#Install TempEst
+RUN wget -O /tempest.tgz 'http://tree.bio.ed.ac.uk/download.php?id=102&num=3'
+RUN tar -zxvf tempest.tgz && rm tempest.tgz
+RUN mv TempEst* TempEst
+RUN export PATH=$PATH:/TempEst/bin/
+RUN cd /
