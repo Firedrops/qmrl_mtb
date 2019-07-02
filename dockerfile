@@ -46,6 +46,14 @@ RUN git clone https://github.com/broadinstitute/gatk.git
 RUN cd gatk/
 RUN ./gradlew bundle
 RUN ./gradlew clean
+RUN cd /ls
+
+#Install IGV FAILED https://github.com/igvteam/igv/issues/664
+RUN git clone https://github.com/igvteam/igv.git
+RUN cd igv/
+RUN ./gradlew createDist
+RUN ./gradlew createToolsDist
+RUN ./gradlew test --no-daemon
 RUN cd /
 
 #Install Trimmomatic
@@ -70,6 +78,11 @@ RUN rm SPAdes-3.13.1-Linux.tar.gz
 RUN mv SPAdes-* SPAdes
 RUN PATH=$PATH:/SPAdes/bin/
 RUN cd /
+
+#Install SPAdes alternative WIP error not resolved yet
+RUN git clone https://github.com/ablab/spades.git
+RUN cd /spades/assembler
+RUN ./spades_compile.sh
 
 #Install Freebayes
 RUN git clone --recursive git://github.com/ekg/freebayes.git
@@ -97,10 +110,10 @@ RUN ./install_kraken2.sh /kraken2/
 RUN cp /kraken2/kraken2{,-build,-inspect} /bin
 RUN cd /
 
-#Install beast 1.x
+#Install beast 1.x #Check BEAST* wildcard, might collide
 RUN curl -s "https://api.github.com/repos/beast-dev/beast-mcmc/releases/latest" | jq --arg PLATFORM_ARCH "tgz" -r '.assets[] | select(.name | endswith($PLATFORM_ARCH)).browser_download_url' | xargs curl -L -o /beast1.tgz
 RUN tar -zxvf beast1.tgz
-RUN mv BEAST* beast1
+#RUN mv BEAST* beast1
 RUN rm beast1.tgz
 RUN export PATH=$Path:/beast1/bin/
 RUN cd /
@@ -108,7 +121,40 @@ RUN cd /
 #Install beast 2.x #NOT DONE YET CHECK GITHUB ISSUES https://gist.github.com/lukechilds/a83e1d7127b78fef38c2914c4ececc3c
 RUN curl -s "https://api.github.com/repos/CompEvol/beast2/releases/latest" | jq --arg PLATFORM_ARCH "BEAST.v2*tgz" -r '.assets[] | select(.name | endswith($PLATFORM_ARCH)).browser_download_url' | xargs curl -L -o /beast2.tgz
 RUN tar -zxvf beast1.tgz
-RUN mv BEAST* beast1
+#RUN mv BEAST* beast1
 RUN rm beast1.tgz
 RUN export PATH=$Path:/beast1/bin/
 RUN cd /
+
+#Install Figtree
+RUN curl -s "https://api.github.com/repos/rambaut/figtree/releases/latest" | jq --arg PLATFORM_ARCH "tgz" -r '.assets[] | select(.name | endswith($PLATFORM_ARCH)).browser_download_url' | xargs curl -L -o /figtree.tgz
+RUN tar -zxvf figtree.tgz
+RUN mv FigTree* FigTree
+RUN rm figtree.tgz
+RUN export PATH=$Path:/FigTree/bin/
+RUN cd /
+
+#Install SnpEff (SnpSift included) #To be tested
+RUN wget http://sourceforge.net/projects/snpeff/files/snpEff_latest_core.zip
+RUN unzip snpEff_latest_core.zip
+RUN rm snpEff_latest_core.gzip
+RUN mv snpEff* snpEff
+#Optional: The database directory can be changed in snpEff.config. Default is in the installation folder (./data/).
+#See: http://snpeff.sourceforge.net for more information
+
+#Install Circos (needs to be periodically updated)
+RUN wget -O /Circos.tgz http://circos.ca/distribution/circos-0.69-8.tgz
+RUN tar -zxvf Circos.tgz
+RUN rm Circos.tgz
+
+#Install Miniconda for python 2.7 (required for MTBseq) WIP install python3 for mykrobe
+RUN wget -O /miniconda.sh https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh
+RUN bash /miniconda.sh -b -p -f /miniconda/
+RUN export PATH=$Path:/miniconda/bin/
+RUN cd /
+
+#Install MTBseq FAILED due to GATK issue
+RUN conda install -c -y bioconda mtbseq
+
+#Install Mykrobe
+RUN conda install -y -c bioconda mykrobe
