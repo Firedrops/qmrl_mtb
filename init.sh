@@ -45,6 +45,16 @@ else
   exit 1
 fi
 
+#Create folder to mount into docker for file transfers, and retain saved files when docker containers are deleted.
+echo -e "Creating folder 'dhost_mount' in home directory to be mounted in docker containers.\nThis folder can be used to transfer files in/out of the container, as well as retain saved output files."
+for i in {1..3}
+do
+  echo '!!!!!' "Only files saved in /dcont_mount/ in the container are retained, please match output paths" '!!!!!'
+done
+sudo mkdir $HOME/dhost_mount/
+
 #Pull Docker image #WIP
 docker pull dockersubtest/qimr_mtb:latest
-docker run -itd qimr_mtb
+docker run -it --rm -p 8787:8787 -v $HOME/dhost_mount:/dcont_mount/ qimr_mtb
+
+#open browser navigate to https://192.168.99.100:8787 OR http://localhost:8787
