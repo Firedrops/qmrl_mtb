@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export DockerUsername="foo" #replace foo in quotes with your username, retain the quotation marks.
+export DockerUsername="~/qimr_mtb/duser.txt" #path to .txt containing docker password
 export lpass="~/qimr_mtb/lpass.txt" #path to .txt containing linux password
 #By default, sudo password is only prompted once every 15 minutes, so I have chosen to pass it only once per if loop to simplify commands.
 export dpass="~/qimr_mtb/dpass.txt" #path to .txt containing docker password
