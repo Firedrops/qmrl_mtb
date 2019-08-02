@@ -7,8 +7,8 @@ Pipeline for mtb analysis built for QIMR.
 2. Ensure up to date repository and `git` is installed
 3. `git clone https://github.com/Firedrops/qimr_mtb.git` and navigate to the folder (usually ~/qimr_mtb/)
 4. Open `duser.txt`, `dpass.txt`, and `lpass.txt`. Replace `placeholder` text with your docker username, docker password, and linux password, respectively.
-4.1 Optional: In case your working directory is not `~/qimr_mtb/`, open and edit the first few lines of `init.sh` to match your working directory.
-5. Run `init.sh`.
+5. Optional: In case your working directory is not `~/qimr_mtb/`, open and edit the first few lines of `init.sh` to match your working directory.
+6. Run `init.sh`.
   init.sh checks for existing docker installation, and installs it automatically if it is not found, and
     logs in to docker, and
       pulls the qimr_mtb docker image, and
@@ -38,33 +38,63 @@ Further documentation can be found [here](https://ropenscilabs.github.io/r-docke
 
 ## Tools included in this docker
 Bcftools
+
 Beast 1 and 2
+
 Bedtools
-Bwamem
-Canu
+
+Bwamem 
+
+Canu 
+
 Circos
+
 Circulator
+
 FastQC
+
 Figtree
+
 Freebayes
+
 Gatk
+
 IGV
+
 Kraken
+
 MEGA
+
 MTBseq
+
 Minimap2
+
 Mummer (and Yaggo)
+
 Mykrobe predictor
+
 Picardtools
+
 Pilon
+
 Quast
+
 R/R-Studio
+
 RAxML
+
 Racon
+
 Rapiddr
+
 Samtools
+
 SnpEFF/snpSIFT
+
 Spades
+
 TempEst
+
 Trimal
+
 Trimmomatic
