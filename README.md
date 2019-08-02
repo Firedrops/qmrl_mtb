@@ -2,7 +2,7 @@
 Pipeline for mtb analysis built for QIMR. 
 
 ## Instructions
-### Written for debian-based OS. May work on similar architectures with small or minor syntax tweaks.
+### Written for debian-based OS. May work on similar architectures with no or minor syntax tweaks.
 1. Set up a docker account if you haven't https://www.docker.com/
 2. Ensure up to date repository and `git` is installed
 3. `git clone https://github.com/Firedrops/qimr_mtb.git` and navigate to the folder (usually ~/qimr_mtb/)
