@@ -11,19 +11,16 @@ EXPOSE 80 443 22 9418
 #RUN git config --global url.https://github.com/.insteadOf git://github.com/
 
 #Install apt packages, mostly dependencies, some are software
-RUN apt -y update
-ENV IMAGE_PACKAGES="zlib1g-dev libz-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libgconf-2-4 libssl-dev libncurses5-dev libopenblas-base build-essential make g++ gcc perl python3-pip autoconf automake r-base jq ruby apache2 bwa gzip kalign tar wget vim bedtools"
-RUN apt -y install $IMAGE_PACKAGES
+ENV IMAGE_PACKAGES="zlib1g-dev libz-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libgconf-2-4 libssl-dev libncurses5-dev libopenblas-base build-essential make g++ gcc perl pip python3-pip autoconf automake r-base jq ruby apache2 bwa gzip kalign tar wget vim bedtools"
+RUN apt -y update && apt -y install $IMAGE_PACKAGES
 ENV PIP_PACKAGES="gsalib reshape"
 RUN pip install $PIP_PACKAGES
 
-#Install Perl CGI module, it's not included into the standard distribution anymore
-RUN curl -L https://cpanmin.us | perl - App::cpanminus
-RUN cpanm install CGI
-
-#Install other Perl modules
-RUN cpanm Statistics::Basic
-RUN cpanm MCE
+#Install Perl CGI, MCE, and Statistics::Basic modules.
+RUN curl -L https://cpanmin.us | perl - App::cpanminus \
+  && cpanm CGI \
+    Statistics::Basic \
+    MCE
 
 #Install git lfs, prerequisite for gradlew installations
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
@@ -38,7 +35,6 @@ RUN cd samtools
 RUN autoheader && autoconf -Wno-syntax && ./configure
 RUN make
 RUN make install
-RUN apt-get install pip
 RUN cd /
 
 #Install bcftools
@@ -152,7 +148,7 @@ RUN rm figtree.tgz
 RUN export PATH=$PATH:/FigTree/bin/
 RUN cd /
 
-#Install SnpEff (SnpSift included) #To be tested
+#Install SnpEff (SnpSift included)
 RUN wget http://sourceforge.net/projects/snpeff/files/snpEff_latest_core.zip
 RUN unzip snpEff_latest_core.zip
 RUN rm snpEff_latest_core.gzip
