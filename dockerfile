@@ -26,158 +26,82 @@ RUN curl -L https://cpanmin.us | perl - App::cpanminus \
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
 RUN apt install -y git-lfs
 
+#Install htslib
+RUN git clone https://github.com/samtools/htslib.git && cd htslib && make && cd /
+
 #Install Samtools
-RUN git clone https://github.com/samtools/htslib.git
-RUN cd htslib && make
-RUN cd /
-RUN git clone git://github.com/samtools/samtools.git
-RUN cd samtools
-RUN autoheader && autoconf -Wno-syntax && ./configure
-RUN make
-RUN make install
-RUN cd /
+RUN git clone git://github.com/samtools/samtools.git && cd samtools && autoheader && autoconf -Wno-syntax && ./configure && make && make install && cd /
 
 #Install bcftools
-RUN git clone git://github.com/samtools/bcftools.git
-RUN cd bcftools
-RUN autoheader && autoconf && ./configure --enable-libgsl --enable-perl-filters
-RUN make
-RUN cd /
+RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && autoheader && autoconf && ./configure --enable-libgsl --enable-perl-filters && make && cd/
 
 #Install Picard
-RUN git clone https://github.com/broadinstitute/picard.git
-RUN cd picard/
-RUN ./gradlew shadowJar
-RUN ./gradlew clean
-RUN cd /
+RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gradlew shadowJar && ./gradlew clean && cd /
 
 #Install GATK4
-RUN git clone https://github.com/broadinstitute/gatk.git
-RUN cd gatk/
-RUN ./gradlew bundle
-RUN ./gradlew clean
-RUN cd /ls
+RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew bundle && ./gradlew clean && cd /ls
 
 #Install IGV Possible Debug. My test VM crashes at ./gradlew test but no errors thrown, so assumed working.
-RUN git clone https://github.com/igvteam/igv.git
-RUN cd igv/
-RUN ./gradlew createDist
-RUN ./gradlew createToolsDist
-RUN ./gradlew test --no-daemon
-RUN cd /
+RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createDist && ./gradlew createToolsDist && ./gradlew test --no-daemon && cd /
 
 #Install Trimmomatic
-RUN git clone https://github.com/timflutre/trimmomatic.git
-RUN cd trimmomatic/
-RUN make
-RUN check
-RUN make install
-RUN cd /
+RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ && make && check && make install && cd /
 
 #Install FASTQC
-RUN git clone https://github.com/s-andrews/FastQC.git
-RUN cd FastQC/
-RUN chmod 755 fastqc
-RUN sudo ln -s /FastQC/fastqc /usr/local/bin/fastqc
-RUN cd /
+RUN git clone https://github.com/s-andrews/FastQC.git && cd FastQC/ && chmod 755 fastqc && sudo ln -s /FastQC/fastqc /usr/local/bin/fastqc && cd /
 
 #Install SPAdes
 RUN curl -s "https://api.github.com/repos/ablab/spades/releases" | grep download | grep Linux.tar.gz | head -n 1 | awk '{print $2}' | xargs curl -L -o /SPAdes.tar.gz
-RUN tar -zxvf SPAdes.tar.gz
-RUN rm SPAdes.tar.gz
-RUN mv SPAdes* SPAdes
-RUN export PATH=$PATH:/SPAdes/bin/
-RUN cd /
+RUN tar -zxvf SPAdes.tar.gz && rm SPAdes.tar.gz && mv SPAdes* SPAdes && export PATH=$PATH:/SPAdes/bin/ && cd /
 
 #Install Freebayes
-RUN git clone --recursive git://github.com/ekg/freebayes.git
-RUN cd freebayes/
-RUN make
-RUN make install
-RUN cd /
+RUN git clone --recursive git://github.com/ekg/freebayes.git && cd freebayes/ && make && make install && cd /
 
 #Install yaggo (prerequisite for Mummer)
 RUN gem install yaggo
 
 #Install Mummer
 RUN curl -s "https://api.github.com/repos/mummer4/mummer/releases" | grep download | grep tar.gz | head -n 1 | awk '{print $2}' | xargs curl -L -o /mummer.tar.gz
-RUN tar -zxvf mummer.tar.gz
-RUN rm mummer.tar.gz
-RUN mv mummer* mummer
-RUN cd mummer/
-RUN ./configure --prefix=/mummer/
-RUN make
-RUN make install
-RUN export PATH=$PATH:/mummer/
-RUN cd /
+RUN tar -zxvf mummer.tar.gz && rm mummer.tar.gz && mv mummer* mummer && cd mummer/ && ./configure --prefix=/mummer/ && make && make install && export PATH=$PATH:/mummer/ && cd /
 
 #Install Prodigal (Prerequisite for Circlator)
-RUN git clone https://github.com/hyattpd/Prodigal.git
-RUN cd Prodigal
-RUN make install
-RUN cd /
+RUN git clone https://github.com/hyattpd/Prodigal.git && cd Prodigal && make install && cd /
 
 #Install Kraken2
-RUN git clone https://github.com/DerrickWood/kraken2.git
-RUN cd kraken2/
-RUN ./install_kraken2.sh /kraken2/
-RUN cp /kraken2/kraken2{,-build,-inspect} /bin
-RUN cd /
+RUN git clone https://github.com/DerrickWood/kraken2.git && cd kraken2/ && ./install_kraken2.sh /kraken2/ && cp /kraken2/kraken2{,-build,-inspect} /bin && cd /
 
 #Install beast 1.x
 RUN curl -s "https://api.github.com/repos/beast-dev/beast-mcmc/releases/latest" | jq --arg PLATFORM_ARCH "tgz" -r '.assets[] | select(.name | endswith($PLATFORM_ARCH)).browser_download_url' | xargs curl -L -o /beast1.tgz
-RUN tar -zxvf beast1.tgz
-#RUN mv BEAST* beast1
-RUN rm beast1.tgz
-RUN export PATH=$PATH:/beast1/bin/
-RUN cd /
+RUN tar -zxvf beast1.tgz && rm beast1.tgz && mv BEAST* beast1 && export PATH=$PATH:/beast1/bin/ && cd /
 
 #Install beast 2.x
 RUN curl -s "https://api.github.com/repos/CompEvol/beast2/releases/latest" | grep download | grep tgz | head -n 1 | awk '{print $2}' | xargs curl -L -o /beast2.tgz
-RUN tar -zxvf beast2.tgz
-#RUN mv beast beast2
-RUN rm beast2.tgz
-RUN export PATH=$PATH:/beast2/bin/
-RUN cd /
+RUN tar -zxvf beast2.tgz && rm beast2.tgz && mv beast beast2 && export PATH=$PATH:/beast2/bin/        && cd /
 
 #Install Figtree
 RUN curl -s "https://api.github.com/repos/rambaut/figtree/releases/latest" | jq --arg PLATFORM_ARCH "tgz" -r '.assets[] | select(.name | endswith($PLATFORM_ARCH)).browser_download_url' | xargs curl -L -o /figtree.tgz
-RUN tar -zxvf figtree.tgz
-RUN mv FigTree* FigTree
-RUN rm figtree.tgz
-RUN export PATH=$PATH:/FigTree/bin/
-RUN cd /
+RUN tar -zxvf figtree.tgz && rm figtree.tgz && mv FigTree* FigTree && export PATH=$PATH:/FigTree/bin/ && cd /
 
 #Install SnpEff (SnpSift included)
 RUN wget http://sourceforge.net/projects/snpeff/files/snpEff_latest_core.zip
-RUN unzip snpEff_latest_core.zip
-RUN rm snpEff_latest_core.gzip
-RUN mv snpEff* snpEff
+RUN unzip snpEff_latest_core.zip && rm snpEff_latest_core.gzip && mv snpEff* snpEff
 #Optional: The database directory can be changed in snpEff.config. Default is in the installation folder (./data/).
 #See: http://snpeff.sourceforge.net for more information
 
-#Install Circos
-RUN wget -O /Circos.tgz http://circos.ca/distribution/circos-current.tgz
-RUN tar -zxvf Circos.tgz
-RUN rm Circos.tgz
+#Install Circos #UI#
+RUN wget -O /Circos.tgz http://circos.ca/distribution/circos-current.tgz && tar -zxvf Circos.tgz && rm Circos.tgz
 
 #Install Miniconda (Prerequisite for MTBseq)
 RUN wget -O /miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-RUN bash /miniconda.sh -b -f -p /miniconda/
-RUN rm /miniconda.sh
-RUN export PATH=$PATH:/miniconda/bin/
-RUN conda install anaconda
-RUN cd /
+RUN bash /miniconda.sh -b -f -p /miniconda/ && rm /miniconda.sh && export PATH=$PATH:/miniconda/bin/ && conda install anaconda && cd /
 
-#Install MTBseq #Almost done check https://github.com/ngs-fzb/MTBseq_source/issues/29 #Still missing depndencies (cpanm stuff)
-RUN conda install -y -c bioconda mtbseq
-RUN cd /
-RUN mkdir /miniconda/dependencies/
+#Install MTBseq 
+RUN conda install -y -c bioconda mtbseq && cd / && mkdir /miniconda/dependencies/
 RUN wget -O /miniconda/dependencies/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36" chromium --referer https://software.broadinstitute.org/gatk/download/archive 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.8-1-0-gf15c1c3ef'
 wget -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36" chromium --referer https://software.broadinstitute.org/gatk/download/archive 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.8-1-0-gf15c1c3ef'
 RUN gatk3-register /miniconda/dependencies/GenomeAnalysisTK[-$PKG_VERSION.tar.bz2|.jar]
 
-#Install Mykrobe #Almost done check https://github.com/Mykrobe-tools/mykrobe/issues/62
+#Install Mykrobe
 RUN conda install -y -c bioconda mykrobe
 
 #Install TBProfiler
@@ -187,38 +111,17 @@ RUN conda install -y -c bioconda tb-profiler
 RUN conda install -y -c bioconda pilon
 
 #Install VCFtools
-RUN git clone https://github.com/vcftools/vcftools.git
-RUN cd vcftools
-RUN ./autogen.sh
-RUN ./configure
-RUN make
-RUN make install
-RUN cd /
+RUN git clone https://github.com/vcftools/vcftools.git && cd vcftools && ./autogen.sh &&^ ./configure && make && make install && cd /
 
 #Install trimAl
-RUN git clone https://github.com/scapella/trimal.git
-RUN cd trimal/source
-RUN make
-RUN export PATH=$PATH:/trimal/source/
-RUN cd /
+RUN git clone https://github.com/scapella/trimal.git && cd trimal/source && make && export PATH=$PATH:/trimal/source/ && cd /
 
 #Install Racon
-RUN git clone --recursive https://github.com/isovic/racon.git racon
-RUN cd racon
-RUN mkdir build
-RUN cd build
-RUN cmake -DCMAKE_BUILD_TYPE=Release ..
-RUN make
-RUN make install
-RUN cd /
+RUN git clone --recursive https://github.com/isovic/racon.git racon && cd racon && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make && make install && cd /
 
 #Install Canu
 RUN curl -s "https://api.github.com/repos/marbl/canu/releases/latest" | jq --arg PLATFORM_ARCH "Linux-amd64.tar.xz" -r '.assets[] | select(.name | endswith($PLATFORM_ARCH)).browser_download_url' | xargs curl -L -o /canu.tar.xz
-RUN tar -zJf canu.tar.xz
-RUN mv canu-* canu
-RUN rm canu.tar.xz
-RUN export PATH=$PATH:/canu/Linux-amd64/bin
-RUN cd /
+RUN tar -zJf canu.tar.xz && rm canu.tar.xz && mv canu-* canu && export PATH=$PATH:/canu/Linux-amd64/bin && cd /
 
 #Install Circlator
 RUN pip3 install circlator && cd /
@@ -228,17 +131,13 @@ RUN conda install -y -c bioconda quast && cd /
 
 #Install TempEst
 RUN wget -O /tempest.tgz 'http://tree.bio.ed.ac.uk/download.php?id=102&num=3'
-RUN tar -zxvf tempest.tgz && rm tempest.tgz
-RUN mv TempEst* TempEst
-RUN export PATH=$PATH:/TempEst/bin/
-RUN cd /
+RUN tar -zxvf tempest.tgz && rm tempest.tgz && mv TempEst* TempEst && export PATH=$PATH:/TempEst/bin/ && cd /
 
 #Install MEGA5 #May become outdated
 RUN wget https://www.megasoftware.net/do_force_download/megax_10.0.5-1_amd64.deb #GUI version
-RUN dpkg -i megax_10.0.5-1_amd64.deb
-RUN cd /
+RUN dpkg -i megax_10.0.5-1_amd64.deb && cd /
 
-#Installs R based on rocker's scripts
+########################Installs R based on rocker's scripts########################
 
 ARG BUILD_DATE
 ENV LC_ALL=en_US.UTF-8 \
