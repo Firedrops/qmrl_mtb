@@ -26,6 +26,9 @@ RUN curl -L https://cpanmin.us | perl - App::cpanminus \
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
 RUN apt install -y git-lfs
 
+#Install GSL, prerequisite for bcftools
+RUN git clone https://github.com/LuaDist/gsl.git && cd gsl && ./configure && make && make install && cd /
+
 #Install htslib
 RUN git clone https://github.com/samtools/htslib.git && cd htslib && make && cd /
 
