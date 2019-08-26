@@ -43,7 +43,8 @@ RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && c
 RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gradlew shadowJar && ./gradlew clean && cd /
 
 #Install GATK4
-RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew bundle && ./gradlew clean && cd /
+RUN git clone https://github.com/broadinstitute/gatk.git 
+RUN cd gatk/ && ./gradlew bundle && ./gradlew clean && cd /
 
 #Install IGV Possible Debug. My test VM crashes at ./gradlew test but no errors thrown, so assumed working.
 RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createDist && ./gradlew createToolsDist && ./gradlew test --no-daemon && cd /
