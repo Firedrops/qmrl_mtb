@@ -35,8 +35,8 @@ RUN git clone https://github.com/samtools/htslib.git && cd htslib && make && cd 
 #Install Samtools
 RUN git clone git://github.com/samtools/samtools.git && cd samtools && autoheader && autoconf -Wno-syntax && ./configure && make && make install && cd /
 
-#Install bcftools
-RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && cd /
+#Install bcftools Temporarily disabled
+#RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && cd /
 #RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && autoheader && autoconf && ./configure --enable-libgsl --enable-perl-filters && make && cd /
 
 #Install Picard
