@@ -52,7 +52,7 @@ RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createD
 RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ && make && make check && make install && cd /
 
 #Install FASTQC
-RUN git clone https://github.com/s-andrews/FastQC.git && cd FastQC/ && chmod 755 fastqc && sudo ln -s /FastQC/fastqc /usr/local/bin/fastqc && cd /
+RUN git clone https://github.com/s-andrews/FastQC.git && cd FastQC/ && chmod 755 fastqc && ln -s /FastQC/fastqc /usr/local/bin/fastqc && cd /
 
 #Install SPAdes
 RUN curl -s "https://api.github.com/repos/ablab/spades/releases" | grep download | grep Linux.tar.gz | head -n 1 | awk '{print $2}' | xargs curl -L -o /SPAdes.tar.gz
