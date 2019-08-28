@@ -72,7 +72,7 @@ RUN tar -zxvf mummer.tar.gz && rm mummer.tar.gz && mv mummer* mummer && cd mumme
 RUN git clone https://github.com/hyattpd/Prodigal.git && cd Prodigal && make install && cd /
 
 #Install Kraken2
-RUN git clone https://github.com/DerrickWood/kraken2.git && cd kraken2/ && ./install_kraken2.sh /kraken2/ && cp /kraken2/kraken2{,-build,-inspect} /bin && cd /
+RUN git clone https://github.com/DerrickWood/kraken2.git && cd kraken2/ && ./install_kraken2.sh /kraken2/ && export PATH=$PATH:/kraken2/:/kraken2/kraken2-build/:/kraken2/kraken2-inspect/ /bin && cd /
 
 #Install beast 1.x
 RUN curl -s "https://api.github.com/repos/beast-dev/beast-mcmc/releases/latest" | jq --arg PLATFORM_ARCH "tgz" -r '.assets[] | select(.name | endswith($PLATFORM_ARCH)).browser_download_url' | xargs curl -L -o /beast1.tgz
