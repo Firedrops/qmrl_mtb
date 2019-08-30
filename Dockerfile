@@ -76,7 +76,7 @@ RUN git clone https://github.com/DerrickWood/kraken2.git && cd kraken2/ && ./ins
 
 #Install beast 1.x
 #RUN curl -s "https://api.github.com/repos/beast-dev/beast-mcmc/releases/latest" | jq --arg PLATFORM_ARCH "tgz" -r '.assets[] | select(.name | endswith($PLATFORM_ARCH)).browser_download_url' | xargs curl -L -o /beast1.tgz
-RUN wget -O /beast1.tgz https://github.com/beast-dev/beast-mcmc/archive/v1.10.4.tar.gz && tar -zxvf beast1.tgz && rm beast1.tgz && mv BEAST* beast1 && export PATH=$PATH:/beast1/bin/ && cd /
+RUN wget -O /beast1.tgz https://github.com/beast-dev/beast-mcmc/archive/v1.10.4.tar.gz && tar -zxf beast1.tgz && rm beast1.tgz && mv beast-mcmc* beast1 && export PATH=$PATH:/beast1/bin/ && cd /
 
 #Install beast 2.x
 RUN curl -s "https://api.github.com/repos/CompEvol/beast2/releases/latest" | grep download | grep tgz | head -n 1 | awk '{print $2}' | xargs curl -L -o /beast2.tgz
