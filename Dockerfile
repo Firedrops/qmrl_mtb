@@ -90,7 +90,7 @@ RUN tar -zxvf figtree.tgz && rm figtree.tgz && mv FigTree* FigTree && export PAT
 
 #Install SnpEff (SnpSift included)
 RUN wget http://sourceforge.net/projects/snpeff/files/snpEff_latest_core.zip
-RUN unzip snpEff_latest_core.zip && rm snpEff_latest_core.gzip && mv snpEff* snpEff
+RUN unzip snpEff_latest_core.zip && rm snpEff_latest_core.zip && mv snpEff* snpEff
 #Optional: The database directory can be changed in snpEff.config. Default is in the installation folder (./data/).
 #See: http://snpeff.sourceforge.net for more information
 
