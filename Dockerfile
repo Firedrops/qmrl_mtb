@@ -99,23 +99,34 @@ RUN wget -O /Circos.tgz http://circos.ca/distribution/circos-current.tgz && tar 
 
 #Install Miniconda (Prerequisite for MTBseq)
 RUN wget -O /miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-RUN bash /miniconda.sh -b -f -p /miniconda/ && rm /miniconda.sh && export PATH=$PATH:/miniconda/bin/ && cd /
-#&& conda install anaconda -y
+RUN bash /miniconda.sh -b -f -p /miniconda/ && rm /miniconda.sh && export PATH=$PATH:/miniconda/bin/ && \
+	conda install -y anaconda && \
+	conda install -y -c bioconda mtbseq && cd / && mkdir /miniconda/dependencies/ && \
+	wget -O /miniconda/dependencies/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36" chromium --referer https://software.broadinstitute.org/gatk/download/archive 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.8-1-0-gf15c1c3ef' && \
+	gatk3-register /miniconda/dependencies/GenomeAnalysisTK[-$PKG_VERSION.tar.bz2|.jar] && \
+	conda install -y -c bioconda mykrobe && \
+	conda install -y -c bioconda tb-profiler && \
+	conda install -y -c bioconda pilon && \
+	conda install -y -c bioconda quast && \
+	cd /
 
 #Install MTBseq
-RUN conda install -y -c bioconda mtbseq && cd / && mkdir /miniconda/dependencies/
-RUN wget -O /miniconda/dependencies/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36" chromium --referer https://software.broadinstitute.org/gatk/download/archive 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.8-1-0-gf15c1c3ef'
+#RUN conda install -y -c bioconda mtbseq && cd / && mkdir /miniconda/dependencies/
+#RUN wget -O /miniconda/dependencies/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36" chromium --referer https://software.broadinstitute.org/gatk/download/archive 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.8-1-0-gf15c1c3ef'
 #wget -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36" chromium --referer https://software.broadinstitute.org/gatk/download/archive 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.8-1-0-gf15c1c3ef'
-RUN gatk3-register /miniconda/dependencies/GenomeAnalysisTK[-$PKG_VERSION.tar.bz2|.jar]
+#RUN gatk3-register /miniconda/dependencies/GenomeAnalysisTK[-$PKG_VERSION.tar.bz2|.jar]
 
 #Install Mykrobe
-RUN conda install -y -c bioconda mykrobe
+#RUN conda install -y -c bioconda mykrobe
 
 #Install TBProfiler
-RUN conda install -y -c bioconda tb-profiler
+#RUN conda install -y -c bioconda tb-profiler
 
 #Install Pilon
-RUN conda install -y -c bioconda pilon
+#RUN conda install -y -c bioconda pilon
+
+#Install QUAST
+#RUN conda install -y -c bioconda quast
 
 #Install VCFtools
 RUN git clone https://github.com/vcftools/vcftools.git && cd vcftools && ./autogen.sh &&^ ./configure && make && make install && cd /
@@ -132,9 +143,6 @@ RUN tar -zJf canu.tar.xz && rm canu.tar.xz && mv canu-* canu && export PATH=$PAT
 
 #Install Circlator
 RUN pip3 install circlator && cd /
-
-#Install QUAST
-RUN conda install -y -c bioconda quast && cd /
 
 #Install TempEst
 RUN wget -O /tempest.tgz 'http://tree.bio.ed.ac.uk/download.php?id=102&num=3'
