@@ -79,8 +79,10 @@ RUN git clone https://github.com/DerrickWood/kraken2.git && cd kraken2/ && ./ins
 RUN wget -O /beast1.tgz https://github.com/beast-dev/beast-mcmc/archive/v1.10.4.tar.gz && tar -zxf beast1.tgz && rm beast1.tgz && mv beast-mcmc* beast1 && export PATH=$PATH:/beast1/bin/ && cd /
 
 #Install beast 2.x
-RUN curl -s "https://api.github.com/repos/CompEvol/beast2/releases/latest" | grep download | grep tgz | head -n 1 | awk '{print $2}' | xargs curl -L -o /beast2.tgz
-RUN tar -zxvf beast2.tgz && rm beast2.tgz && mv beast beast2 && export PATH=$PATH:/beast2/bin/        && cd /
+#RUN curl -s "https://api.github.com/repos/CompEvol/beast2/releases/latest" | grep download | grep tgz | head -n 1 | awk '{print $2}' | xargs curl -L -o /beast2.tgz
+#RUN tar -zxvf beast2.tgz && rm beast2.tgz && mv beast beast2 && export PATH=$PATH:/beast2/bin/ && cd /
+#Temporary workaround, needs updating issue opened https://github.com/CompEvol/beast2/issues/875
+RUN wget -O /beast2.tgz https://github.com/CompEvol/beast2/releases/download/v2.6.0/BEAST.v2.6.0.Linux.tgz && tar -zxvf beast2.tgz && rm beast2.tgz && mv beast beast2 && export PATH=$PATH:/beast2/bin/ && cd /
 
 #Install Figtree
 RUN curl -s "https://api.github.com/repos/rambaut/figtree/releases/latest" | jq --arg PLATFORM_ARCH "tgz" -r '.assets[] | select(.name | endswith($PLATFORM_ARCH)).browser_download_url' | xargs curl -L -o /figtree.tgz
