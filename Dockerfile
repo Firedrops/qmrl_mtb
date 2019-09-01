@@ -99,8 +99,8 @@ RUN wget -O /Circos.tgz http://circos.ca/distribution/circos-current.tgz && tar 
 
 #Install Miniconda (Prerequisite for MTBseq)
 RUN wget -O /miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-RUN bash /miniconda.sh -b -f -p /miniconda/ && rm /miniconda.sh && export PATH=$PATH:/miniconda/bin/ -y && cd /
-#&& conda install anaconda
+RUN bash /miniconda.sh -b -f -p /miniconda/ && rm /miniconda.sh && export PATH=$PATH:/miniconda/bin/ && cd /
+#&& conda install anaconda -y
 
 #Install MTBseq
 RUN conda install -y -c bioconda mtbseq && cd / && mkdir /miniconda/dependencies/
