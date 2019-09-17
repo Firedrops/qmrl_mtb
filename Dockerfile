@@ -104,7 +104,7 @@ RUN bash /miniconda.sh -b -f -p /miniconda/ && rm /miniconda.sh && export PATH=$
 	conda install -y -c bioconda mtbseq && cd / && mkdir /miniconda/dependencies/ && \
 	mkdir /miniconda/mtbdependencies/
 	
-RUN wget -O /miniconda/mtbdependencies/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef.tar.bz2 -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36" chromium --referer https://software.broadinstitute.org/gatk/download/archive 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.8-1-0-gf15c1c3ef'
+RUN wget -O /miniconda/mtbdependencies/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef.tar.bz2 -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36" --referer https://software.broadinstitute.org/gatk/download/archive 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.8-1-0-gf15c1c3ef'
 	
 RUN gatk3-register /miniconda/mtbdependencies/GenomeAnalysisTK[-$PKG_VERSION.tar.bz2|.jar] && \
 	conda install -y -c bioconda mykrobe && \
