@@ -64,7 +64,7 @@ RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradle
 #	apt install -y oracle-java11-installer && \
 #	apt install -y oracle-java11-set-default
 #
-RUN deb http://ftp.de.debian.org/debian stretch main && \
+RUN echo "deb http://ftp.de.debian.org/debian stretch main" &&  | tee /etc/apt/sources.list\
 	apt update && \
 	apt -t stretch-backports install -y openjdk-11-jdk
 #Move to start if it fixes IGV
