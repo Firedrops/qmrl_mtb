@@ -66,7 +66,7 @@ RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradle
 #
 RUN echo "deb http://ftp.de.debian.org/debian stretch main" | tee /etc/apt/sources.list\ && \
 	apt update && \
-	apt -t install -y openjdk-11-jdk
+	apt install -y openjdk-11-jdk
 #Move to start if it fixes IGV
 
 
