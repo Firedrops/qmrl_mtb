@@ -54,13 +54,13 @@ RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradle
 #	apt install -y openjdk-11-jdk
 #RUN apt install -y default-jdk
 RUN apt install -y software-properties-common && \
-	apt-get --allow-releaseinfo-change update && \
+	apt --allow-releaseinfo-change update && \
 	add-apt-repository ppa:webupd8team/java &&\
-	apt-get --allow-releaseinfo-change update && \
+	apt --allow-releaseinfo-change update && \
 	apt install -y dirmngr && \
 	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EA8CACC073C3DB2A && \
 	echo "deb http://ppa.launchpad.net/linuxuprising/java/ubuntu bionic main" | tee /etc/apt/sources.list.d/linuxuprising-java.list && \
-	apt-get --allow-releaseinfo-change update && \
+	apt --allow-releaseinfo-change update && \
 	apt install -y oracle-java11-installer && \
 	apt install -y oracle-java11-set-default
 #Move to start if it fixes IGV
