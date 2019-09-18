@@ -64,9 +64,14 @@ RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradle
 #	apt install -y oracle-java11-installer && \
 #	apt install -y oracle-java11-set-default
 #
-RUN echo "deb http://ftp.de.debian.org/debian stretch main" | tee /etc/apt/sources.list\ && \
-	apt update && \
-	apt install -y openjdk-11-jdk
+#RUN echo "deb http://ftp.de.debian.org/debian stretch main" | tee /etc/apt/sources.list\ && \
+#	apt update && \
+#	apt install -y openjdk-11-jdk
+RUN apt install -y software-properties-common && \
+	add-apt-repository ppa:linuxuprising/java &&\
+	apt-get update && \
+	apt install -y oracle-java11-installer-local && \
+	apt install oracle-java11-set-default-local
 #Move to start if it fixes IGV
 
 
