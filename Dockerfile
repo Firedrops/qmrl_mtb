@@ -165,7 +165,7 @@ RUN git clone --recursive https://github.com/isovic/racon.git racon && cd racon 
 
 #Install Canu
 RUN curl -s "https://api.github.com/repos/marbl/canu/releases/latest" | jq --arg PLATFORM_ARCH "Linux-amd64.tar.xz" -r '.assets[] | select(.name | endswith($PLATFORM_ARCH)).browser_download_url' | xargs curl -L -o /canu.tar.xz
-RUN tar -xzf canu.tar.xz && rm canu.tar.xz && mv canu-* canu && export PATH=$PATH:/canu/Linux-amd64/bin && cd /
+RUN tar -xJf canu.tar.xz && rm canu.tar.xz && mv canu-* canu && export PATH=$PATH:/canu/Linux-amd64/bin && cd /
 
 #Install Circlator
 RUN pip3 install circlator && cd /
