@@ -168,7 +168,8 @@ RUN curl -s "https://api.github.com/repos/marbl/canu/releases/latest" | jq --arg
 RUN tar -xJf canu.tar.xz && rm canu.tar.xz && mv canu-* canu && export PATH=$PATH:/canu/Linux-amd64/bin && cd /
 
 #Install Circlator
-RUN alias python=python3
+RUN export PATH=$PATH:/mummer/
+#RUN alias python=python3
 RUN pip3 install --upgrade setuptools
 RUN pip3 install circlator && cd /
 
