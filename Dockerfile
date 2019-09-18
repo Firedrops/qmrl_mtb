@@ -46,12 +46,13 @@ RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gr
 RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew bundle && ./gradlew clean && cd /
 
 #Install Java11
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 40976EAF437D05B5
-RUN apt install -y software-properties-common && \
-	apt-get update -q && \
-	add-apt-repository ppa:openjdk-r/ppa && \ 
-	apt-get update -q && \
-	apt install -y openjdk-11-jdk
+#RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 40976EAF437D05B5
+#RUN apt install -y software-properties-common && \
+#	apt-get update -q && \
+#	add-apt-repository ppa:openjdk-r/ppa && \ 
+#	apt-get update -q && \
+#	apt install -y openjdk-11-jdk
+RUN apt install -y openjdk-lts
 #Move to start if it fixes IGV
 
 #Install IGV Possible Debug. My test VM crashes at ./gradlew test but no errors thrown, so assumed working.
