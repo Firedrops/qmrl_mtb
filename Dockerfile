@@ -108,30 +108,24 @@ RUN bash /miniconda.sh -b -f -p /miniconda/ && rm /miniconda.sh && export PATH=$
 	conda install -y -c bioconda mykrobe && \
 	conda install -y -c bioconda tb-profiler && \
 	conda install -y -c bioconda pilon && \
-	conda install -y -c bioconda quast && \
+	#conda install -y -c bioconda quast && \
 	cd /
 
-#Install MTBseq
-#RUN conda install -y -c bioconda mtbseq && cd / && mkdir /miniconda/dependencies/
-#RUN wget -O /miniconda/dependencies/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36" chromium --referer https://software.broadinstitute.org/gatk/download/archive 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.8-1-0-gf15c1c3ef'
-#wget -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36" chromium --referer https://software.broadinstitute.org/gatk/download/archive 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.8-1-0-gf15c1c3ef'
-#RUN gatk3-register /miniconda/dependencies/GenomeAnalysisTK[-$PKG_VERSION.tar.bz2|.jar]
-
-#Install Mykrobe
-#RUN conda install -y -c bioconda mykrobe
-
-#Install TBProfiler
-#RUN conda install -y -c bioconda tb-profiler
-
-#Install Pilon
-#RUN conda install -y -c bioconda pilon
-
-#Install QUAST
-#RUN conda install -y -c bioconda quast
+#Install QUAST alternate
+RUN git clone https://github.com/ablab/quast.git && \
+	cd quast && \
+	./setup.py install_full &&\
+	cd /
 
 #Install VCFtools
-RUN git clone https://github.com/vcftools/vcftools.git && cd vcftools && ./autogen.sh &&^ ./configure && make && make install && cd /
-
+RUN git clone https://github.com/vcftools/vcftools.git && \
+	cd vcftools && \
+	./autogen.sh && \
+	./configure && \
+	make && \
+	make install && \
+	cd /
+	
 #Install trimAl
 RUN git clone https://github.com/scapella/trimal.git && cd trimal/source && make && export PATH=$PATH:/trimal/source/ && cd /
 
