@@ -47,8 +47,8 @@ RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradle
 
 #Install Java11
 RUN add-apt-repository ppa:openjdk-r/ppa && \ 
-	sudo apt-get update -q && \
-	sudo apt install -y openjdk-11-jdk
+	apt-get update -q && \
+	apt install -y openjdk-11-jdk
 #Move to start if it fixes IGV
 
 #Install IGV Possible Debug. My test VM crashes at ./gradlew test but no errors thrown, so assumed working.
