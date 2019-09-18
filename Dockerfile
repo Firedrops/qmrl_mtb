@@ -45,10 +45,10 @@ RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gr
 #Install GATK4
 RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew bundle && ./gradlew clean && cd /
 
-#Configure Java for Java9
-RUN export PATH && \
-	export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/ && \
-	export PATH=${PATH}:$JAVA_HOME/bin
+#Install Java11
+RUN sudo add-apt-repository ppa:openjdk-r/ppa && \ 
+	sudo apt-get update -q && \
+	sudo apt install -y openjdk-11-jdk
 #Move to start if it fixes IGV
 
 #Install IGV Possible Debug. My test VM crashes at ./gradlew test but no errors thrown, so assumed working.
