@@ -45,6 +45,12 @@ RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gr
 #Install GATK4
 RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew bundle && ./gradlew clean && cd /
 
+#Configure Java for Java9
+RUN export PATH && \
+	export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/ && \
+	export PATH=${PATH}:$JAVA_HOME/bin
+#Move to start if it fixes IGV
+
 #Install IGV Possible Debug. My test VM crashes at ./gradlew test but no errors thrown, so assumed working.
 RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createDist && ./gradlew createToolsDist && ./gradlew test --no-daemon && cd /
 
