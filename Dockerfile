@@ -46,7 +46,9 @@ RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gr
 RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew bundle && ./gradlew clean && cd /
 
 #Install Java11
-RUN add-apt-repository ppa:openjdk-r/ppa && \ 
+RUN apt install software-properties-common && \
+	apt-get update -q && \
+	add-apt-repository ppa:openjdk-r/ppa && \ 
 	apt-get update -q && \
 	apt install -y openjdk-11-jdk
 #Move to start if it fixes IGV
