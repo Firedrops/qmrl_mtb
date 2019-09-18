@@ -168,10 +168,9 @@ RUN curl -s "https://api.github.com/repos/marbl/canu/releases/latest" | jq --arg
 RUN tar -xJf canu.tar.xz && rm canu.tar.xz && mv canu-* canu && export PATH=$PATH:/canu/Linux-amd64/bin && cd /
 
 #Install Circlator
-RUN export PATH=$PATH:/mummer
 #RUN alias python=python3
 RUN pip3 install --upgrade setuptools
-RUN pip3 install circlator && cd /
+RUN export PATH=$PATH:/mummer && pip3 install circlator && cd /
 
 #Install TempEst
 RUN wget -O /tempest.tgz 'http://tree.bio.ed.ac.uk/download.php?id=102&num=3'
