@@ -53,7 +53,9 @@ RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradle
 #	apt-get update -q && \
 #	apt install -y openjdk-11-jdk
 #RUN apt install -y default-jdk
-RUN add-apt-repository ppa:webupd8team/java &&\
+RUN apt install -y software-properties-common && \
+	apt-get update -q && \
+	add-apt-repository ppa:webupd8team/java &&\
 	apt install -y dirmngr && \
 	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EA8CACC073C3DB2A && \
 	echo "deb http://ppa.launchpad.net/linuxuprising/java/ubuntu bionic main" | tee /etc/apt/sources.list.d/linuxuprising-java.list && \
