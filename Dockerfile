@@ -11,7 +11,7 @@ EXPOSE 80 443 22 9418
 #RUN git config --global url.https://github.com/.insteadOf git://github.com/
 
 #Install apt packages, mostly dependencies, some are software
-ENV IMAGE_PACKAGES="zlib1g-dev libz-dev libbz2-dev liblzma-dev libperl-dev libcurl4-gnutls-dev libgconf-2-4 libssl-dev libncurses5-dev libopenblas-base build-essential perl python-pip python3-pip autoconf automake r-base jq ruby apache2 bwa gzip kalign tar wget vim bedtools"
+ENV IMAGE_PACKAGES="zlib1g-dev libz-dev libbz2-dev liblzma-dev libperl-dev libcurl4-gnutls-dev libgconf-2-4 libssl-dev libncurses5-dev libopenblas-base build-essential perl cmake python-pip python3-pip autoconf automake r-base jq ruby apache2 bwa gzip kalign tar wget vim bedtools"
 RUN apt -y update && apt -y install $IMAGE_PACKAGES
 ENV PIP_PACKAGES="gsalib reshape"
 RUN pip install $PIP_PACKAGES
