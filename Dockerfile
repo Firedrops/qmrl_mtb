@@ -67,16 +67,17 @@ RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradle
 #RUN echo "deb http://ftp.de.debian.org/debian stretch main" | tee /etc/apt/sources.list\ && \
 #	apt update && \
 #	apt install -y openjdk-11-jdk
-RUN apt install -y software-properties-common && \
-	add-apt-repository ppa:linuxuprising/java &&\
-	apt-get update && \
-	apt install -y --allow-unauthenticated oracle-java11-installer-local && \
-	apt install oracle-java11-set-default-local
+#RUN apt install -y software-properties-common && \
+#	add-apt-repository ppa:linuxuprising/java &&\
+#	apt-get update && \
+#	apt install -y --allow-unauthenticated oracle-java11-installer-local && \
+#	apt install oracle-java11-set-default-local
 #Move to start if it fixes IGV
 
 
 #Install IGV Possible Debug. My test VM crashes at ./gradlew test but no errors thrown, so assumed working.
-RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createDist && ./gradlew createToolsDist && ./gradlew test --no-daemon && cd /
+# RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createDist && ./gradlew createToolsDist && ./gradlew test --no-daemon && cd /
+#Skipped for now until java 11 figured out
 
 #Install Trimmomatic
 RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ && make && make check && make install && cd /
