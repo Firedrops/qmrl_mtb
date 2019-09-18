@@ -70,7 +70,7 @@ RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradle
 RUN apt install -y software-properties-common && \
 	add-apt-repository ppa:linuxuprising/java &&\
 	apt-get update && \
-	apt install -y oracle-java11-installer-local && \
+	apt install -y --allow-unauthenticated oracle-java11-installer-local && \
 	apt install oracle-java11-set-default-local
 #Move to start if it fixes IGV
 
