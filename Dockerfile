@@ -46,7 +46,7 @@ RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gr
 RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew bundle && ./gradlew clean && cd /
 
 #Install Java11
-RUN apt install software-properties-common && \
+RUN apt install -y software-properties-common && \
 	apt-get update -q && \
 	add-apt-repository ppa:openjdk-r/ppa && \ 
 	apt-get update -q && \
