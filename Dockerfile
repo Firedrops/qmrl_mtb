@@ -52,8 +52,15 @@ RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradle
 #	add-apt-repository ppa:openjdk-r/ppa && \ 
 #	apt-get update -q && \
 #	apt install -y openjdk-11-jdk
-RUN apt install -y default-jdk
+#RUN apt install -y default-jdk
+RUN apt install -y dirmngr && \
+	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EA8CACC073C3DB2A && \
+	echo "deb http://ppa.launchpad.net/linuxuprising/java/ubuntu bionic main" | sudo tee /etc/apt/sources.list.d/linuxuprising-java.list && \
+	apt update && \
+	apt install -y oracle-java11-installer && \
+	apt install -y oracle-java11-set-default
 #Move to start if it fixes IGV
+
 
 #Install IGV Possible Debug. My test VM crashes at ./gradlew test but no errors thrown, so assumed working.
 RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createDist && ./gradlew createToolsDist && ./gradlew test --no-daemon && cd /
