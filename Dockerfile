@@ -423,6 +423,12 @@ CMD ["/init"]
 
 #tidyverse https://hub.docker.com/r/rocker/tidyverse/dockerfile
 
+COPY rpkginstall.sh /rpkginstall.sh
+RUN chmod + x rpkginstall && \
+	./rpkginstall pkgdown && \
+	./rpkginstall broom && \
+	./rpkginstallmodelr
+	
 RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libxml2-dev \
   libcairo2-dev \
