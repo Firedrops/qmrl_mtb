@@ -423,7 +423,7 @@ CMD ["/init"]
 
 #tidyverse https://hub.docker.com/r/rocker/tidyverse/dockerfile
 
-COPY rpkginstall.sh /rpkginstall.sh
+COPY rpkginstall /rpkginstall
 RUN chmod + x rpkginstall && \
 	./rpkginstall pkgdown && \
 	./rpkginstall broom && \
