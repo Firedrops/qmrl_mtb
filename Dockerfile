@@ -1,4 +1,4 @@
-mo#2-in-1 version, default.
+#2-in-1 version, default.
 #Based on google cloud docker for built-in integration, R installed at the end. See "rstudio series" for notes.
 
 FROM google/cloud-sdk
