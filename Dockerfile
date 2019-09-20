@@ -424,7 +424,7 @@ COPY rpkginstall /rpkginstall
 RUN chmod +x rpkginstall && \
 	./rpkginstall pkgdown && \
 	./rpkginstall broom && \
-	./rpkginstallmodelr
+	./rpkginstall modelr
 	
 RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libxml2-dev \
