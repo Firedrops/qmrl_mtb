@@ -318,7 +318,7 @@ CMD ["R"]
 #rstudio https://hub.docker.com/r/rocker/rstudio/dockerfile
 
 ARG RSTUDIO_VERSION
-#ENV RSTUDIO_VERSION=${RSTUDIO_VERSION:-1.2.1335}
+#ENV RSTUDIO_VERSION=${RSTUDIO_VERSION:-1.1.463}
 ARG S6_VERSION
 ARG PANDOC_TEMPLATES_VERSION
 ENV S6_VERSION=${S6_VERSION:-v1.21.7.0}
@@ -338,20 +338,17 @@ RUN apt-get update \
     libedit2 \
     libssl-dev \
     lsb-release \
+    multiarch-support \
     psmisc \
     procps \
     python-setuptools \
     sudo \
     wget \
     libclang-dev \
-    libclang-3.8-dev \
-    libobjc-6-dev \
-    libclang1-3.8 \
-    libclang-common-3.8-dev \
-    libllvm3.8 \
-    libobjc4 \
-    libgc1c2 \
-  && if [ -z "$RSTUDIO_VERSION" ]; then RSTUDIO_URL="https://www.rstudio.org/download/latest/stable/server/debian9_64/rstudio-server-latest-amd64.deb"; else RSTUDIO_URL="http://download2.rstudio.org/server/debian9/x86_64/rstudio-server-${RSTUDIO_VERSION}-amd64.deb"; fi \
+  && wget -O libssl1.0.0.deb http://ftp.debian.org/debian/pool/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u8_amd64.deb \
+  && dpkg -i libssl1.0.0.deb \
+  && rm libssl1.0.0.deb \
+  && if [ -z "$RSTUDIO_VERSION" ]; then RSTUDIO_URL="https://www.rstudio.org/download/latest/stable/server/debian9_64/rstudio-server-latest-amd64.deb"; else RSTUDIO_URL="http://download2.rstudio.org/rstudio-server-${RSTUDIO_VERSION}-amd64.deb"; fi \
   && wget -q $RSTUDIO_URL \
   && dpkg -i rstudio-server-*-amd64.deb \
   && rm rstudio-server-*-amd64.deb \
