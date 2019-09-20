@@ -1,4 +1,4 @@
-#2-in-1 version, default.
+mo#2-in-1 version, default.
 #Based on google cloud docker for built-in integration, R installed at the end. See "rstudio series" for notes.
 
 FROM google/cloud-sdk
@@ -424,7 +424,7 @@ CMD ["/init"]
 #tidyverse https://hub.docker.com/r/rocker/tidyverse/dockerfile
 
 COPY rpkginstall /rpkginstall
-RUN chmod + x rpkginstall && \
+RUN chmod +x rpkginstall && \
 	./rpkginstall pkgdown && \
 	./rpkginstall broom && \
 	./rpkginstallmodelr
