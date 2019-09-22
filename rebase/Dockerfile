@@ -216,4 +216,8 @@ RUN tar -zxvf tempest.tgz && rm tempest.tgz && mv TempEst* TempEst && export PAT
 
 #Install MEGA5 #May become outdated
 RUN wget https://www.megasoftware.net/do_force_download/megax_10.0.5-1_amd64.deb #GUI version
+<<<<<<< HEAD
+=======
+RUN apt install -y libgtk-3-0
+>>>>>>> parent of 0ddffec... Update Dockerfile
 RUN dpkg -i megax_10.0.5-1_amd64.deb && cd /
