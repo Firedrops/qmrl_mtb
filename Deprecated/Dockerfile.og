@@ -1,46 +1,8 @@
-#2-in-1 version, default.
+#Original 2-in-1 version
 #Based on google cloud docker for built-in integration, R installed at the end. See "rstudio series" for notes.
 
-FROM rocker/verse
+FROM google/cloud-sdk
 LABEL maintainer="Larry Cai <larrycai.jpl@gmail.com>"
-
-
-#Install Google Cloud SDK https://hub.docker.com/r/google/cloud-sdk/dockerfile
-ARG CLOUD_SDK_VERSION=263.0.0
-ENV CLOUD_SDK_VERSION=$CLOUD_SDK_VERSION
-ENV PATH "$PATH:/opt/google-cloud-sdk/bin/"
-#COPY --from=static-docker-source /usr/local/bin/docker /usr/local/bin/docker
-RUN apt-get -qqy update && apt-get install -qqy \
-        curl \
-        gcc \
-        python-dev \
-        python-setuptools \
-        apt-transport-https \
-        lsb-release \
-        openssh-client \
-        git \
-        gnupg \
-    && easy_install -U pip && \
-    pip install -U crcmod   && \
-    export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
-    echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" > /etc/apt/sources.list.d/google-cloud-sdk.list && \
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
-    apt-get update && \
-    apt-get install -y google-cloud-sdk=${CLOUD_SDK_VERSION}-0 \
-        google-cloud-sdk-app-engine-python=${CLOUD_SDK_VERSION}-0 \
-        google-cloud-sdk-app-engine-python-extras=${CLOUD_SDK_VERSION}-0 \
-        google-cloud-sdk-app-engine-java=${CLOUD_SDK_VERSION}-0 \
-        google-cloud-sdk-app-engine-go=${CLOUD_SDK_VERSION}-0 \
-        google-cloud-sdk-datalab=${CLOUD_SDK_VERSION}-0 \
-        google-cloud-sdk-datastore-emulator=${CLOUD_SDK_VERSION}-0 \
-        google-cloud-sdk-pubsub-emulator=${CLOUD_SDK_VERSION}-0 \
-        google-cloud-sdk-bigtable-emulator=${CLOUD_SDK_VERSION}-0 \
-        google-cloud-sdk-cbt=${CLOUD_SDK_VERSION}-0 \
-        kubectl && \
-    gcloud --version && \
-    docker --version && kubectl version --client
-VOLUME ["/root/.config"]
-
 
 EXPOSE 80 443 22 9418
 #22 for SSH, 9418 for git, 80 and 443 general catch-alls
@@ -87,7 +49,7 @@ RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradle
 #RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 40976EAF437D05B5
 #RUN apt install -y software-properties-common && \
 #	apt-get update -q && \
-#	add-apt-repository ppa:openjdk-r/ppa && \ 
+#	add-apt-repository ppa:openjdk-r/ppa && \
 #	apt-get update -q && \
 #	apt install -y openjdk-11-jdk
 #RUN apt install -y default-jdk
@@ -171,7 +133,7 @@ RUN wget -O /miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-
 RUN bash /miniconda.sh -b -f -p /miniconda/ && rm /miniconda.sh && export PATH=$PATH:/miniconda/bin/ && \
 	conda install -y anaconda && \
 	conda install -y -c bioconda mtbseq && \
-	mkdir /miniconda/mtbdependencies/ && \ 
+	mkdir /miniconda/mtbdependencies/ && \
 	wget -O /miniconda/mtbdependencies/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef.tar.bz2 -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36" --referer https://software.broadinstitute.org/gatk/download/archive 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.8-1-0-gf15c1c3ef' && \
 	gatk3-register /miniconda/mtbdependencies/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef.tar.bz2 && \
 	conda install -y -c bioconda mykrobe && \
@@ -194,7 +156,7 @@ RUN git clone https://github.com/vcftools/vcftools.git && \
 	make && \
 	make install && \
 	cd /
-	
+
 #Install trimAl
 RUN git clone https://github.com/scapella/trimal.git && cd trimal/source && make && export PATH=$PATH:/trimal/source/ && cd /
 
