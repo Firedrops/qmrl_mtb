@@ -75,7 +75,7 @@ RUN apt install -y git-lfs
 RUN git clone git://git.savannah.gnu.org/gsl.git && \
 	cd /gsl && \
 	./autogen.sh && \
-	./configure 
+	./configure && \
 	make && \
 	make install && \
 	cd /
