@@ -37,6 +37,7 @@ RUN apt-get -qqy update && apt-get install -qqy \
         google-cloud-sdk-bigtable-emulator=${CLOUD_SDK_VERSION}-0 \
         google-cloud-sdk-cbt=${CLOUD_SDK_VERSION}-0 \
         kubectl && \
+	
 VOLUME ["/root/.config"]
 
 
@@ -153,7 +154,7 @@ RUN git clone https://github.com/hyattpd/Prodigal.git && cd Prodigal && make ins
 RUN git clone https://github.com/DerrickWood/kraken2.git && \
 	cd kraken2/ && \
 	./install_kraken2.sh /kraken2/ && \
-	&& cd /
+	cd /
 ENV PATH $PATH:/kraken2/:/kraken2/kraken2-build/:/kraken2/kraken2-inspect/ \
 
 #Install beast 1.x
