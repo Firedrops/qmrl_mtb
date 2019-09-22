@@ -188,7 +188,7 @@ RUN wget -O /beast2.tgz https://github.com/CompEvol/beast2/releases/download/v2.
 	rm beast2.tgz && \
 	mv beast beast2 && \
 	cd /
-ENV PATH $PATH:/beast2/bin/ && \
+ENV PATH $PATH:/beast2/bin/
 
 #Install Figtree
 RUN curl -s "https://api.github.com/repos/rambaut/figtree/releases/latest" | jq --arg PLATFORM_ARCH "tgz" -r '.assets[] | select(.name | endswith($PLATFORM_ARCH)).browser_download_url' | xargs curl -L -o /figtree.tgz
