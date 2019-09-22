@@ -64,13 +64,22 @@ RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.d
 RUN apt install -y git-lfs
 
 #Install GSL, prerequisite for bcftools
-RUN git clone https://github.com/LuaDist/gsl.git && \
+#RUN git clone https://github.com/LuaDist/gsl.git && \
+#	cd /gsl && \
+#	./configure --disable-shared && \
+#	make && \
+#	make install && \
+#	cd /
+
+#Install GSL, prerequisite for bcftools ALTERNATIVE	
+RUN git clone git://git.savannah.gnu.org/gsl.git && \
 	cd /gsl && \
-	./configure --disable-shared && \
+	./autogen.sh && \
+	./configure 
 	make && \
 	make install && \
 	cd /
-
+	
 #Install htslib
 RUN git clone https://github.com/samtools/htslib.git && cd htslib && make && cd /
 
