@@ -211,9 +211,11 @@ RUN wget -O /Circos.tgz http://circos.ca/distribution/circos-current.tgz && \
 	rm Circos.tgz
 
 #Install Miniconda (Prerequisite for MTBseq)
-RUN wget -O /miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-RUN bash /miniconda.sh -b -f -p /miniconda/ && rm /miniconda.sh && export PATH=$PATH:/miniconda/bin/ && \
-	conda install -y anaconda && \
+RUN wget -O /miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
+	bash /miniconda.sh -b -f -p /miniconda/ && \
+	rm /miniconda.sh 
+ENV PATH $PATH:/miniconda/bin/
+RUN conda install -y anaconda && \
 	conda install -y -c bioconda mtbseq && \
 	mkdir /miniconda/mtbdependencies/ && \ 
 	wget -O /miniconda/mtbdependencies/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef.tar.bz2 -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36" --referer https://software.broadinstitute.org/gatk/download/archive 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.8-1-0-gf15c1c3ef' && \
