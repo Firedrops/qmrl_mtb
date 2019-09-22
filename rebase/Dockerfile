@@ -279,7 +279,7 @@ ENV PATH $PATH:/TempEst/bin/
 
 #Install MEGA5 #May become outdated MOVE libgtk2 TO FRONT IF THIS WORKS
 RUN wget https://www.megasoftware.net/do_force_download/megax_10.0.5-1_amd64.deb #GUI version
-RUN apt install -y libgtk-3-0
+RUN apt install -y libgtk2.0-bin
 RUN dpkg -i megax_10.0.5-1_amd64.deb && cd /
 
 ###GUI Installation
