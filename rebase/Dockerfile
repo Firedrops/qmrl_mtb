@@ -36,9 +36,9 @@ RUN apt-get -qqy update && apt-get install -qqy \
         google-cloud-sdk-pubsub-emulator=${CLOUD_SDK_VERSION}-0 \
         google-cloud-sdk-bigtable-emulator=${CLOUD_SDK_VERSION}-0 \
         google-cloud-sdk-cbt=${CLOUD_SDK_VERSION}-0 \
-        kubectl && \
+        kubectl
 	
-#VOLUME ["/root/.config"]
+VOLUME ["/root/.config"]
 
 
 EXPOSE 80 443 22 9418
