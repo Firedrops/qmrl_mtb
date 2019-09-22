@@ -98,3 +98,22 @@ TempEst
 Trimal
 
 Trimmomatic
+
+## GUI instructions TODO clean up and adapt
+
+# To build the image, run the following from this directory:
+docker build -t beast_testing .
+
+# To run the tests, use
+docker run beast_testing
+#
+# To run the tests interactively, use
+#   docker run -it -p 5900:5900 beast_testing /bin/bash
+# This will give you a shell in the container. From this
+# shell, run
+#   vncserver $DISPLAY -geometry 1920x1080; ant travis
+#
+# The previous command exposes the VNC session, so while the
+# BEAUti test suite is running you can run a VNC viewer and
+# connect it to localhost (password: password) to observe
+# the graphical output of these tests.
