@@ -301,6 +301,6 @@ RUN ldconfig
 #RUN mkdir /root/beast2
 #WORKDIR /beast2
 
-#ADD build.xml ./
+ADD build.xml ./
 
 CMD vncserver $DISPLAY -geometry 1920x1080; ant travis
