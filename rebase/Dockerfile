@@ -298,9 +298,11 @@ RUN cd /beagle-lib && ./autogen.sh && ./configure --prefix=/usr/local && make in
 RUN ldconfig
 
 # Ant build fails if the repo dir isn't named beast2
-#RUN mkdir /root/beast2
-#WORKDIR /beast2
+RUN mkdir /root/beast2
+WORKDIR /root/beast2
 
-ADD build.xml ./
+#ADD build.xml ./
+
+ADD . ./
 
 CMD vncserver $DISPLAY -geometry 1920x1080; ant travis
