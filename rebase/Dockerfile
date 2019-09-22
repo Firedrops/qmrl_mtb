@@ -48,7 +48,7 @@ EXPOSE 80 443 22 9418
 #RUN git config --global url.https://github.com/.insteadOf git://github.com/
 
 #Install apt packages, mostly dependencies, some are software
-ENV IMAGE_PACKAGES="zlib1g-dev libz-dev libbz2-dev liblzma-dev libperl-dev libcurl4-gnutls-dev libgconf-2-4 libssl-dev libncurses5-dev libopenblas-base build-essential perl cmake python-pip python3-pip autoconf automake r-base jq ruby apache2 bwa gzip kalign tar wget vim bedtools"
+ENV IMAGE_PACKAGES="zlib1g-dev libz-dev libbz2-dev liblzma-dev libperl-dev libcurl4-gnutls-dev libgconf-2-4 libssl-dev libncurses5-dev libopenblas-base libtool pkg-config build-essential perl python-pip python3-pip autoconf automake jq ruby apache2 bwa gzip kalign tar wget vim ant bedtools"
 RUN apt -y update && apt -y install $IMAGE_PACKAGES
 ENV PIP_PACKAGES="gsalib reshape"
 RUN pip install $PIP_PACKAGES
@@ -64,7 +64,12 @@ RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.d
 RUN apt install -y git-lfs
 
 #Install GSL, prerequisite for bcftools
-RUN git clone https://github.com/LuaDist/gsl.git && cd gsl && ./configure && make && make install && cd /
+RUN git clone https://github.com/LuaDist/gsl.git && \
+	cd /gsl && \
+	./configure --disable-shared && \
+	make && \
+	make install && \
+	cd /
 
 #Install htslib
 RUN git clone https://github.com/samtools/htslib.git && cd htslib && make && cd /
@@ -264,3 +269,26 @@ ENV PATH $PATH:/TempEst/bin/
 #Install MEGA5 #May become outdated
 RUN wget https://www.megasoftware.net/do_force_download/megax_10.0.5-1_amd64.deb #GUI version
 RUN dpkg -i megax_10.0.5-1_amd64.deb && cd /
+
+###GUI Installation
+#Install and configure VNC server
+RUN apt-get update && apt-get install -y tightvncserver twm
+ENV DISPLAY :0
+ENV USER root
+RUN mkdir /root/.vnc
+RUN echo password | vncpasswd -f > /root/.vnc/passwd
+RUN chmod 600 /root/.vnc/passwd
+
+# Install BEAGLE
+# use latest release v3.0.1, issue #786
+RUN git clone --branch v3.0.1 --depth=1 https://github.com/beagle-dev/beagle-lib.git
+RUN cd /beagle-lib && ./autogen.sh && ./configure --prefix=/usr/local && make install
+RUN ldconfig
+
+# Ant build fails if the repo dir isn't named beast2
+#RUN mkdir /root/beast2
+#WORKDIR /beast2
+
+#ADD . ./
+
+CMD vncserver $DISPLAY -geometry 1920x1080; ant travis
