@@ -97,32 +97,15 @@ RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gr
 RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew bundle && ./gradlew clean && cd /
 
 #Install Java11
-#RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 40976EAF437D05B5
-#RUN apt install -y software-properties-common && \
-#	apt-get update -q && \
-#	add-apt-repository ppa:openjdk-r/ppa && \
-#	apt-get update -q && \
-#	apt install -y openjdk-11-jdk
-#RUN apt install -y default-jdk
-#RUN apt install -y software-properties-common && \
-#	apt --allow-releaseinfo-change update && \
-#	add-apt-repository ppa:webupd8team/java &&\
-#	apt --allow-releaseinfo-change update && \
-#	apt install -y dirmngr && \
-#	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EA8CACC073C3DB2A && \
-#	echo "deb http://ppa.launchpad.net/linuxuprising/java/ubuntu bionic main" | tee /etc/apt/sources.list.d/linuxuprising-java.list && \
-#	apt --allow-releaseinfo-change update && \
-#	apt install -y oracle-java11-installer && \
-#	apt install -y oracle-java11-set-default
-#
-#RUN echo "deb http://ftp.de.debian.org/debian stretch main" | tee /etc/apt/sources.list\ && \
-#	apt update && \
-#	apt install -y openjdk-11-jdk
-#RUN apt install -y software-properties-common && \
-#	add-apt-repository ppa:linuxuprising/java &&\
-#	apt-get update && \
-#	apt install -y --allow-unauthenticated oracle-java11-installer-local && \
-#	apt install oracle-java11-set-default-local
+#RUN wget -O /java.tar.bz2 http://hg.openjdk.java.net/jdk-updates/jdk12u/archive/jdk-12.0.2+10.tar.bz2 && \
+#	tar -xjf /java.tar.bz2 && \
+#	install -vdm755 /jdk-12.0.2+10 && \
+#	cp -Rv build/*/images/jdk/* /opt/jdk-12.0.2+10 && \
+#	chown -R root:root /jdk-12.0.2+10 && \
+#	for s in 16 24 32 48; do
+# 	install -vDm644 src/java.desktop/unix/classes/sun/awt/X11/java-icon${s}.png \
+#                /usr/share/icons/hicolor/${s}x${s}/apps/java.png
+#	done
 #Move to start if it fixes IGV
 
 
