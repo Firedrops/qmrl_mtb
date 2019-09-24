@@ -305,4 +305,4 @@ ADD build.xml ./
 
 #ADD . ./
 
-CMD vncserver $DISPLAY -geometry 1920x1080; ant travis
+#CMD vncserver $DISPLAY -geometry 1920x1080; ant travis
