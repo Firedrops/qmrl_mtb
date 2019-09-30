@@ -80,7 +80,7 @@ RUN tar -zxvf OpenJDK10u.tar.gz && \
 ENV JAVA_HOME=/jdk10 BOOT_JDK=/jdk10 PATH=$JAVA_HOME/bin:$PATH
 RUN git clone https://github.com/AdoptOpenJDK/openjdk-build.git && \
 	cd /openjdk-build && \
-	./makejdk-any-platform.sh jdk11u --with-boot-jdk=/jdk10/bin/ && \
+	./makejdk-any-platform.sh --with-boot-jdk=/jdk10 jdk11u && \
 	cd /
 
 #Install GSL, prerequisite for bcftools ALTERNATIVE
