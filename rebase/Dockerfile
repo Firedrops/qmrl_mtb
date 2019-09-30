@@ -78,6 +78,8 @@ RUN tar -zxvf OpenJDK10u.tar.gz && \
 	rm OpenJDK10u.tar.gz && \
 	chmod a+x /jdk10/bin/java
 ENV JAVA_HOME=/jdk10 BOOT_JDK=/jdk10 PATH=$JAVA_HOME/bin:$PATH
+#J11 builder dependencies, move to start if works.
+RUN apt install -y libx11-dev libxext-dev libxrender-dev libxrandr-dev libxtst-dev libxt-dev
 RUN git clone https://github.com/AdoptOpenJDK/openjdk-build.git && \
 	cd /openjdk-build && \
 	./makejdk-any-platform.sh -J /jdk10 jdk11u && \
