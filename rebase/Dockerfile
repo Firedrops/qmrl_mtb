@@ -1,9 +1,8 @@
 #2-in-1 version, default.
-#Based on google cloud docker for built-in integration, R installed at the end. See "rstudio series" for notes.
+#Based on Rocker's R-verse docker, with google cloud docker installed on top.
 
 FROM rocker/verse
 LABEL maintainer="Larry Cai <larrycai.jpl@gmail.com>"
-
 
 #Install Google Cloud SDK https://hub.docker.com/r/google/cloud-sdk/dockerfile
 ARG CLOUD_SDK_VERSION=263.0.0
