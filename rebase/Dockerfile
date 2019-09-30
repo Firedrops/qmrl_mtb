@@ -83,7 +83,7 @@ RUN apt install -y libx11-dev libxext-dev libxrender-dev libxrandr-dev libxtst-d
 RUN apt install -y libcups2-dev
 RUN git clone https://github.com/AdoptOpenJDK/openjdk-build.git && \
 	cd /openjdk-build && \
-	./makejdk-any-platform.sh -J /jdk10 jdk11u && \
+	./makejdk-any-platform.sh -J /jdk10 --configure-args --disable-warnings-as-errors jdk11u && \
 	cd /
 
 #Install GSL, prerequisite for bcftools ALTERNATIVE
