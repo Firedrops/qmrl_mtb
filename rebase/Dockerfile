@@ -77,7 +77,7 @@ RUN tar -zxvf OpenJDK10u.tar.gz && \
 	mv jdk-10* jdk10 && \
 	rm OpenJDK10u.tar.gz && \
 	chmod a+x /jdk10/bin/java
-ENV JAVA_HOME=/jdk10 PATH=$JAVA_HOME/bin:$PATH
+ENV JAVA_HOME=/jdk10 BOOT_JDK=/jdk10 PATH=$JAVA_HOME/bin:$PATH
 RUN git clone https://github.com/AdoptOpenJDK/openjdk-build.git && \
 	cd /openjdk-build && \
 	./makejdk-any-platform.sh jdk11u && \
