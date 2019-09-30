@@ -48,7 +48,7 @@ EXPOSE 80 443 22 9418
 #RUN git config --global url.https://github.com/.insteadOf git://github.com/
 
 #Install apt packages, mostly dependencies, some are software
-ENV IMAGE_PACKAGES="zlib1g-dev libz-dev libbz2-dev liblzma-dev libperl-dev libcurl4-gnutls-dev libgconf-2-4 libssl-dev libncurses5-dev libopenblas-base libtool pkg-config build-essential perl python-pip python3-pip autoconf automake jq ruby apache2 bwa gzip kalign tar wget vim ant bedtools"
+ENV IMAGE_PACKAGES="zlib1g-dev libz-dev libbz2-dev liblzma-dev libperl-dev libcurl4-gnutls-dev libgconf-2-4 libssl-dev libncurses5-dev libopenblas-base libtool libx11-dev libxext-dev libxrender-dev libxrandr-dev libxtst-dev libxt-dev libcups2-dev libasound2-dev pkg-config build-essential perl python-pip python3-pip autoconf automake jq ruby apache2 bwa gzip kalign tar wget vim ant bedtools"
 RUN apt -y update && apt -y install $IMAGE_PACKAGES
 ENV PIP_PACKAGES="gsalib reshape"
 RUN pip install $PIP_PACKAGES
@@ -64,28 +64,6 @@ RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.d
 RUN apt install -y git-lfs
 
 #Install GSL, prerequisite for bcftools
-#RUN git clone https://github.com/LuaDist/gsl.git && \
-#	cd /gsl && \
-#	./configure --disable-shared && \
-#	make && \
-#	make install && \
-#	cd /
-
-#Install Java11 (downloads prebuilt Java10 first to enable building of Java11)
-RUN curl -s 'https://api.adoptopenjdk.net/v2/info/releases/openjdk10' | grep binary_link | grep OpenJDK10_x64_Linux | head -n 1 |  awk '{print $2}' | xargs echo | rev | cut -c 2- | rev | xargs curl -L -o /OpenJDK10u.tar.gz
-RUN tar -zxvf OpenJDK10u.tar.gz && \
-	mv jdk-10* jdk10 && \
-	rm OpenJDK10u.tar.gz && \
-	chmod a+x /jdk10/bin/java
-ENV JAVA_HOME=/jdk10 BOOT_JDK=/jdk10 PATH=$JAVA_HOME/bin:$PATH
-#J11 builder dependencies, move to start if works.
-RUN apt install -y libx11-dev libxext-dev libxrender-dev libxrandr-dev libxtst-dev libxt-dev libcups2-dev libasound2-dev
-RUN git clone https://github.com/AdoptOpenJDK/openjdk-build.git && \
-	cd /openjdk-build && \
-	./makejdk-any-platform.sh -J /jdk10 --configure-args --disable-warnings-as-errors jdk11u && \
-	cd /
-
-#Install GSL, prerequisite for bcftools ALTERNATIVE
 RUN git clone git://git.savannah.gnu.org/gsl.git && \
 	cd /gsl && \
 	./autogen.sh && \
@@ -98,11 +76,12 @@ RUN git clone git://git.savannah.gnu.org/gsl.git && \
 RUN git clone https://github.com/samtools/htslib.git && cd htslib && make && cd /
 
 #Install Samtools
-RUN git clone git://github.com/samtools/samtools.git && cd samtools && autoheader && autoconf -Wno-syntax && ./configure && make && make install && cd /
+RUN git clone git://github.com/samtools/samtools.git && cd samtools && \ 
+	autoheader && autoconf -Wno-syntax && ./configure && make && make install && \
+	cd /
 
 #Install bcftools
 RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && cd /
-#RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && autoheader && autoconf && ./configure --enable-libgsl --enable-perl-filters && make && cd /
 
 #Install Picard
 RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gradlew shadowJar && ./gradlew clean && cd /
@@ -110,15 +89,13 @@ RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gr
 #Install GATK4
 RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew bundle && ./gradlew clean && cd /
 
-#Install IGV Possible Debug. My test VM crashes at ./gradlew test but no errors thrown, so assumed working.
-# RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createDist && ./gradlew createToolsDist && ./gradlew test --no-daemon && cd /
-#Skipped for now until java 11 figured out
-
 #Install Trimmomatic
 RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ && make && make check && make install && cd /
 
 #Install FASTQC
-RUN git clone https://github.com/s-andrews/FastQC.git && cd FastQC/ && chmod 755 fastqc && ln -s /FastQC/fastqc /usr/local/bin/fastqc && cd /
+RUN git clone https://github.com/s-andrews/FastQC.git && cd FastQC/ && chmod 755 fastqc && \
+	ln -s /FastQC/fastqc /usr/local/bin/fastqc && \
+	cd /
 
 #Install SPAdes
 RUN curl -s "https://api.github.com/repos/ablab/spades/releases" | grep download | grep Linux.tar.gz | head -n 1 | awk '{print $2}' | xargs curl -L -o /SPAdes.tar.gz
@@ -265,6 +242,23 @@ ENV PATH $PATH:/TempEst/bin/
 RUN wget https://www.megasoftware.net/do_force_download/megax_10.0.5-1_amd64.deb #GUI version
 RUN apt install -y libgtk2.0-bin
 RUN dpkg -i megax_10.0.5-1_amd64.deb && cd /
+
+#Install Java11 (downloads prebuilt Java10 first to enable building of Java11)
+RUN curl -s 'https://api.adoptopenjdk.net/v2/info/releases/openjdk10' | grep binary_link | grep OpenJDK10_x64_Linux | head -n 1 |  awk '{print $2}' | xargs echo | rev | cut -c 2- | rev | xargs curl -L -o /OpenJDK10u.tar.gz
+RUN tar -zxvf OpenJDK10u.tar.gz && \
+	mv jdk-10* jdk10 && \
+	rm OpenJDK10u.tar.gz && \
+	chmod a+x /jdk10/bin/java
+ENV JAVA_HOME=/jdk10 BOOT_JDK=/jdk10 PATH=$JAVA_HOME/bin:$PATH
+#J11 builder dependencies, move to start if works.
+RUN apt install -y 
+RUN git clone https://github.com/AdoptOpenJDK/openjdk-build.git && \
+	cd /openjdk-build && \
+	./makejdk-any-platform.sh -J /jdk10 --configure-args --disable-warnings-as-errors jdk11u && \
+	cd /
+	
+#Install IGV Possible Debug. My test VM crashes at ./gradlew test but no errors thrown, so assumed working.
+RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createDist && ./gradlew createToolsDist && ./gradlew test --no-daemon && cd /
 
 ###GUI Installation
 #Install and configure VNC server
