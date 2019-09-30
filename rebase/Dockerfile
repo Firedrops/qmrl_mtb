@@ -71,6 +71,18 @@ RUN apt install -y git-lfs
 #	make install && \
 #	cd /
 
+#Install Java11 (downloads prebuilt Java10 first to enable building of Java11)
+RUN curl -s 'https://api.adoptopenjdk.net/v2/info/releases/openjdk10' | grep binary_link | grep OpenJDK10_x64_Linux | head -n 1 |  awk '{print $2}' | xargs echo | rev | cut -c 2- | rev | xargs curl -L -o /OpenJDK10u.tar.gz
+RUN tar -zxvf OpenJDK10u.tar.gz && \
+	mv jdk-10* jdk10 && \
+	rm OpenJDK10u.tar.gz && \
+	chmod a+x /jdk10/bin/java
+ENV JAVA_HOME=/jdk10 PATH=$JAVA_HOME/bin:$PATH
+RUN git clone https://github.com/AdoptOpenJDK/openjdk-build.git && \
+	cd /openjdk-build && \
+	./makejdk-any-platform.sh jdk11u && \
+	cd /
+
 #Install GSL, prerequisite for bcftools ALTERNATIVE
 RUN git clone git://git.savannah.gnu.org/gsl.git && \
 	cd /gsl && \
@@ -95,19 +107,6 @@ RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gr
 
 #Install GATK4
 RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew bundle && ./gradlew clean && cd /
-
-#Install Java11
-#RUN wget -O /java.tar.bz2 http://hg.openjdk.java.net/jdk-updates/jdk12u/archive/jdk-12.0.2+10.tar.bz2 && \
-#	tar -xjf /java.tar.bz2 && \
-#	install -vdm755 /jdk-12.0.2+10 && \
-#	cp -Rv build/*/images/jdk/* /opt/jdk-12.0.2+10 && \
-#	chown -R root:root /jdk-12.0.2+10 && \
-#	for s in 16 24 32 48; do
-# 	install -vDm644 src/java.desktop/unix/classes/sun/awt/X11/java-icon${s}.png \
-#                /usr/share/icons/hicolor/${s}x${s}/apps/java.png
-#	done
-#Move to start if it fixes IGV
-
 
 #Install IGV Possible Debug. My test VM crashes at ./gradlew test but no errors thrown, so assumed working.
 # RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createDist && ./gradlew createToolsDist && ./gradlew test --no-daemon && cd /
@@ -152,7 +151,7 @@ RUN git clone https://github.com/DerrickWood/kraken2.git && \
 	cd kraken2/ && \
 	./install_kraken2.sh /kraken2/ && \
 	cd /
-ENV PATH $PATH:/kraken2/:/kraken2/kraken2-build/:/kraken2/kraken2-inspect/ \
+ENV PATH $PATH:/kraken2/:/kraken2/kraken2-build/:/kraken2/kraken2-inspect/
 
 #Install beast 1.x
 RUN wget -O /beast1.tgz https://github.com/beast-dev/beast-mcmc/archive/v1.10.4.tar.gz && \
