@@ -257,7 +257,7 @@ RUN git clone https://github.com/AdoptOpenJDK/openjdk-build.git && \
 	cd /
 	
 #Install IGV Possible Debug. My test VM crashes at ./gradlew test but no errors thrown, so assumed working.
-RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createDist && ./gradlew createToolsDist && ./gradlew test --no-daemon && cd /
+RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createDist && ./gradlew test --no-daemon && cd /
 
 ###GUI Installation
 #Install and configure VNC server
