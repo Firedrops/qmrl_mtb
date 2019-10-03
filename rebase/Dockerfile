@@ -274,12 +274,6 @@ RUN cd /root && git clone --branch v3.0.1 --depth=1 https://github.com/beagle-de
 RUN cd /root/beagle-lib && ./autogen.sh && ./configure --prefix=/usr/local && make install
 RUN ldconfig
 
-# Ant build fails if the repo dir isn't named beast2
-RUN mkdir /root/beast2
-WORKDIR /root/beast2
+#CMD vncserver $DISPLAY -geometry 1920x1080
 
-ADD build.xml ./
-
-#ADD . ./
-
-#CMD vncserver $DISPLAY -geometry 1920x1080; ant travis
+EXPOSE 5900
