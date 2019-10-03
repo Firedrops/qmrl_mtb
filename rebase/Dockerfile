@@ -40,8 +40,8 @@ RUN apt-get -qqy update && apt-get install -qqy \
 VOLUME ["/root/.config"]
 
 
-EXPOSE 80 443 22 9418
-#22 for SSH, 9418 for git, 80 and 443 general catch-alls
+EXPOSE 80 443 22 9418 5900
+#22 for SSH, 9418 for git, 80 and 443 general catch-alls, 5900 for VNC (GUI)
 
 #Uncomment if deployment scenario does not have access to port 9418 which prevents git clones. This is a workaround.
 #RUN git config --global url.https://github.com/.insteadOf git://github.com/
@@ -268,12 +268,12 @@ RUN mkdir /root/.vnc
 RUN echo password | vncpasswd -f > /root/.vnc/passwd
 RUN chmod 600 /root/.vnc/passwd
 
-# Install BEAGLE
+# Install BEAGLE Probably not required. Remove if verified.
 # use latest release v3.0.1, issue #786
-RUN cd /root && git clone --branch v3.0.1 --depth=1 https://github.com/beagle-dev/beagle-lib.git
-RUN cd /root/beagle-lib && ./autogen.sh && ./configure --prefix=/usr/local && make install
-RUN ldconfig
+#RUN cd /root && git clone --branch v3.0.1 --depth=1 https://github.com/beagle-dev/beagle-lib.git
+#RUN cd /root/beagle-lib && ./autogen.sh && ./configure --prefix=/usr/local && make install
+#RUN ldconfig
 
 #CMD vncserver $DISPLAY -geometry 1920x1080
 
-EXPOSE 5900
+EXPOSE 
