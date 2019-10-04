@@ -263,17 +263,14 @@ RUN git clone https://github.com/AdoptOpenJDK/openjdk-build.git && \
 RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createDist && ./gradlew test --no-daemon && cd /
 
 ###GUI Installation
+#Install desktop environment
+RUN apt-get update && apt install -y xfce4 task-xfce-desktop
+
 #Install and configure VNC server
-RUN apt-get update && apt-get install -y tightvncserver twm
+RUN apt install -y tightvncserver twm
 ENV DISPLAY=:0 USER=root
 RUN mkdir /root/.vnc && \
 	echo password | vncpasswd -f > /root/.vnc/passwd
 COPY xstartup /root/.vnc/
 RUN chmod 600 /root/.vnc/passwd && \
 	chmod a+x /root/.vnc/xstartup
-
-# Install BEAGLE Probably not required. Remove if verified.
-# use latest release v3.0.1, issue #786
-#RUN cd /root && git clone --branch v3.0.1 --depth=1 https://github.com/beagle-dev/beagle-lib.git
-#RUN cd /root/beagle-lib && ./autogen.sh && ./configure --prefix=/usr/local && make install
-#RUN ldconfig
