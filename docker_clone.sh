@@ -1,8 +1,5 @@
 export USB="insert usb path here"
-
-#portable docker installer
-
-
+#retain the double quotes
 
 #save pre-built docker image for offline portability
 sudo docker save -o $USB/docker/qimr_mtb.docker qimr_mtb
