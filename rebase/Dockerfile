@@ -264,6 +264,7 @@ RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createD
 
 ###GUI Installation
 #Install desktop environment
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt install -y xfce4 task-xfce-desktop
 
 #Install and configure VNC server
