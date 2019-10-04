@@ -1,5 +1,8 @@
 #2-in-1 version, default.
 #Based on Rocker's R-verse docker, with google cloud docker installed on top.
+#To run the docker: docker run -it -p 59000:5900 qimrrebase /bin/bash
+#From within the docker: vncserver $DISPLAY -geometry 1920x1080
+#From a vnc client (e.g. Remmina), connect via VNC protocol to: localhost:5900
 
 FROM rocker/verse
 LABEL maintainer="Larry Cai <larrycai.jpl@gmail.com>"
@@ -262,18 +265,15 @@ RUN git clone https://github.com/igvteam/igv.git && cd igv/ && ./gradlew createD
 ###GUI Installation
 #Install and configure VNC server
 RUN apt-get update && apt-get install -y tightvncserver twm
-ENV DISPLAY :0
-ENV USER root
-RUN mkdir /root/.vnc
-RUN echo password | vncpasswd -f > /root/.vnc/passwd
-RUN chmod 600 /root/.vnc/passwd
+ENV DISPLAY=:0 USER=root
+RUN mkdir /root/.vnc && \
+	echo password | vncpasswd -f > /root/.vnc/passwd
+COPY xstartup /root/.vnc/
+RUN chmod 600 /root/.vnc/passwd && \
+	chmod a+x /root/.vnc/xstartup
 
 # Install BEAGLE Probably not required. Remove if verified.
 # use latest release v3.0.1, issue #786
 #RUN cd /root && git clone --branch v3.0.1 --depth=1 https://github.com/beagle-dev/beagle-lib.git
 #RUN cd /root/beagle-lib && ./autogen.sh && ./configure --prefix=/usr/local && make install
 #RUN ldconfig
-
-#CMD vncserver $DISPLAY -geometry 1920x1080
-
-EXPOSE 
