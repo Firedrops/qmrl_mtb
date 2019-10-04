@@ -3,6 +3,7 @@
 #To run the docker: docker run -it -p 59000:5900 qimrrebase /bin/bash
 #From within the docker: vncserver $DISPLAY -geometry 1920x1080
 #From a vnc client (e.g. Remmina), connect via VNC protocol to: localhost:5900
+#To switch java versions: update-alternatives --config java
 
 FROM rocker/verse
 LABEL maintainer="Larry Cai <larrycai.jpl@gmail.com>"
