@@ -1,5 +1,5 @@
 # qimr_mtb
-Pipeline for mtb analysis built for QIMR.
+Pipeline for mtb analysis built for QIMR. A full list of installed tools are listed below.
 
 Please report bugs in Issues, some software are undergoing transitions from Java8 to Java11, which requires updating of the Dockerfile. I require community feedback to alert me as I am not a regular user of this docker.
 
@@ -68,6 +68,9 @@ Further documentation can be found [here](https://ropenscilabs.github.io/r-docke
           runs and and attaches user input into the docker image.
   At this point (you can see when your user input becomes `root@xx...xx`) you are inside the docker, and can use its tools.
 
+## Citation
+If you have found this useful in your research, please consider citing the authors: Larry Cai, Arnold Bainomugisa, and Lachlan Coin.
+
 ## Tools included in this docker
 Bcftools
 
@@ -130,6 +133,3 @@ TempEst
 Trimal
 
 Trimmomatic
-
-## Citation
-If you have found this useful in your research, please consider citing the authors: Larry Cai, Arnold Bainomugisa, and Lachlan Coin.
