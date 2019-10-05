@@ -1,6 +1,7 @@
 # qimr_mtb
-Pipeline for mtb analysis built for QIMR. 
-Please report bugs in Issues, some software are undergoing transitions from Java8 to Java11, which requires updating of the Dockerfile. 
+Pipeline for mtb analysis built for QIMR.
+
+Please report bugs in Issues, some software are undergoing transitions from Java8 to Java11, which requires updating of the Dockerfile. I require community feedback to alert me as I am not a regular user of this docker.
 
 ## Manual Instructions
 ### Written for debian-based OS. May work on similar architectures with no or minor syntax tweaks.
@@ -18,6 +19,11 @@ Please report bugs in Issues, some software are undergoing transitions from Java
 5. Wait... build is expected to take about 2 hours with a docker image ~40 GB.
 6. Make a shared directory, such as `mkdir ~/dhost_mount`
 7. Run the docker with `docker run -it -p 5900:5900 -p 8787:8787 -v $HOME/dhost_mount:/dcont_mount/ qimr_mtb /bin/bash`
+
+#### To save a local copy of the image (e.g. thumbdrive)
+1. To save: `sudo docker save -o <path to directory>/qimr_mtb.docker qimr_mtb`
+2. To load: `sudo docker load -i <path to directory>/qimr_mtb.docker`
+Please take care to update `docker run` parameters accordingly (e.g. path of the shared directory)
 
 ### To use the GUI
 1. Ensure you have a VNC client installed on the host machine (e.g. Remmina)
