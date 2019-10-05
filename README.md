@@ -29,18 +29,19 @@ In the docker, use `update-alternatives --config java`
 ## To exit the container (e.g. shut it down)
 Simply enter `exit` command or `ctrl + c`.
 
-## To leave the container without stopping it, analogous to tabbing out to another window and letting it continue running in the background.
+## To leave the container without stopping it
+### Analogous to tabbing out to another window and letting it continue running in the background.
 1. `ctrl + p` or `ctrl + q`
 2. To attach back, `docker ps` (may have to add `sudo`), note the first 3 characters under `ID`. For example, JHD898A. 2 will be sufficient if you only have 1 or a few docker containers running, without ID overlaps.
 3. `docker attach <ID>`. For example `docker attach JHD`.
-## This is not recommended. Consider simply by running another terminal window on the host machine if possible.
+### This is not recommended. Consider simply by running another terminal window on the host machine if possible.
 
 ## To pass files in/out from host to docker
 This can be useful for easily passing scripts, source files, and output files in/out of the docker.
 Simply move/copy them into `~/dhost_mount` (host-side), and `/dcont_mount/` (docker-side). Note that the host is in home, and docker in root.
-## IMPORTANT! Only files stored to `/dcont_mount/` directory in the docker will be persistent. All other files will be lost on termination of docker.
+### IMPORTANT! Only files stored to `/dcont_mount/` directory in the docker will be persistent. All other files will be lost on termination of docker.
 
-## To use R (deprecated, can be used via VNC)
+## To use R (deprecated, can be used via VNC, but this method should still work)
 1. Run any internet browser on your host machine.
 2. Navigate to `http://localhost:8787`.
 Further documentation can be found [here](https://ropenscilabs.github.io/r-docker-tutorial/02-Launching-Docker.html)
