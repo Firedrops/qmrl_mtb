@@ -105,8 +105,6 @@ Mummer (and Yaggo)
 
 Mykrobe predictor
 
-## Citation
-If you have found this useful in your research, please consider citing the authors: Larry Cai, Arnold Bainomugisa, and Lachlan Coin.
 Picardtools
 
 Pilon
@@ -132,3 +130,6 @@ TempEst
 Trimal
 
 Trimmomatic
+
+## Citation
+If you have found this useful in your research, please consider citing the authors: Larry Cai, Arnold Bainomugisa, and Lachlan Coin.
