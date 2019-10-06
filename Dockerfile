@@ -90,7 +90,7 @@ RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && c
 RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gradlew shadowJar && ./gradlew clean && cd /
 
 #Install GATK4
-RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew bundle && ./gradlew clean && cd /
+RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew && cd /
 
 #Install Trimmomatic
 RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ && make && make check && make install && cd /
