@@ -33,6 +33,9 @@ Please take care to update `docker run` parameters accordingly (e.g. path of the
 ### To switch Java versions
 In the docker, use `update-alternatives --config java`
 
+### To access NeCTAR
+Simply use the ssh protocol as usual.
+
 ### To exit the container (e.g. shut it down)
 Simply enter `exit` command or `ctrl + c`.
 
