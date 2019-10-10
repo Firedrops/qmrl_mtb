@@ -71,9 +71,6 @@ Further documentation can be found [here](https://ropenscilabs.github.io/r-docke
           runs and and attaches user input into the docker image.
   At this point (you can see when your user input becomes `root@xx...xx`) you are inside the docker, and can use its tools.
 
-## Citation
-If you have found this useful in your research, please consider citing the authors: Larry Cai, Arnold Bainomugisa, and Lachlan Coin.
-
 ## Tools included in this docker
 Bcftools
 
