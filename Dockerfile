@@ -87,7 +87,7 @@ RUN git clone git://github.com/samtools/samtools.git && cd samtools && \
 RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && cd /
 
 #Install Picard
-RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gradlew shadowJar && ./gradlew clean && cd /
+RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gradlew shadowJar && cd /
 
 #Install GATK4
 RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew && cd /
