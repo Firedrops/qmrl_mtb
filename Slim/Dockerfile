@@ -1,6 +1,31 @@
 FROM quay.io/biocontainers/mtbseq:1.0.4--pl526_0
 LABEL maintainer="Larry Cai <larrycai.jpl@gmail.com>"
 
+#Install various dependencies. I am not sure that all of them are needed, just cloned all for now to save time.
+RUN apt-get -qqy update && apt-get install -qqy \
+        curl \
+        gcc \
+        python-dev \
+        python-setuptools \
+        apt-transport-https \
+        lsb-release \
+        openssh-client \
+        git \
+        gnupg \
+	
+ENV IMAGE_PACKAGES="zlib1g-dev libz-dev libbz2-dev liblzma-dev libperl-dev libcurl4-gnutls-dev libgconf-2-4 libssl-dev libncurses5-dev libopenblas-base libtool libx11-dev libxext-dev libxrender-dev libxrandr-dev libxtst-dev libxt-dev libcups2-dev libasound2-dev pkg-config build-essential perl python-pip python3-pip autoconf automake jq ruby apache2 bwa gzip kalign tar wget vim ant bedtools"
+RUN apt -y update && apt -y install $IMAGE_PACKAGES
+ENV PIP_PACKAGES="gsalib reshape"
+RUN pip install $PIP_PACKAGES
+
+RUN curl -L https://cpanmin.us | perl - App::cpanminus \
+  && cpanm CGI \
+    Statistics::Basic \
+    MCE
+
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
+RUN apt install -y git-lfs
+
 #Install VCFtools
 RUN git clone https://github.com/vcftools/vcftools.git && \
 	cd vcftools && \
