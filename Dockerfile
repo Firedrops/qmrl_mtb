@@ -109,7 +109,7 @@ RUN git clone https://github.com/s-andrews/FastQC.git && cd FastQC/ && chmod 755
 #Install SPAdes
 RUN curl -s "https://api.github.com/repos/ablab/spades/releases" | grep download | grep Linux.tar.gz | head -n 1 | awk '{print $2}' | xargs curl -L -o /SPAdes.tar.gz
 RUN tar -zxvf SPAdes.tar.gz && rm SPAdes.tar.gz && mv SPAdes* SPAdes && cd /
-ENV PATH $PATH:/SPAdes/bin/
+ENV PATH $PATH:/SPAdes/bin
 
 #Install Freebayes
 RUN git clone --recursive git://github.com/ekg/freebayes.git && \
@@ -129,7 +129,7 @@ RUN tar -zxvf mummer.tar.gz && rm mummer.tar.gz && mv mummer* mummer && \
 	make && \
 	make install && \
 	cd /
-ENV PATH $PATH:/mummer/
+ENV PATH $PATH:/mummer
 
 #Install Prodigal (Prerequisite for Circlator)
 RUN git clone https://github.com/hyattpd/Prodigal.git && cd Prodigal && make install && cd /
@@ -139,7 +139,7 @@ RUN git clone https://github.com/DerrickWood/kraken2.git && \
 	cd kraken2/ && \
 	./install_kraken2.sh /kraken2/ && \
 	cd /
-ENV PATH $PATH:/kraken2/:/kraken2/kraken2-build/:/kraken2/kraken2-inspect/
+ENV PATH $PATH:/kraken2/:/kraken2/kraken2-build/:/kraken2/kraken2-inspect
 
 #Install beast 1.x
 RUN wget -O /beast1.tgz https://github.com/beast-dev/beast-mcmc/archive/v1.10.4.tar.gz && \
@@ -147,18 +147,19 @@ RUN wget -O /beast1.tgz https://github.com/beast-dev/beast-mcmc/archive/v1.10.4.
 	rm beast1.tgz && \
 	mv beast-mcmc* beast1 && \
 	cd /
-ENV PATH $PATH:/beast1/bin/
+ENV PATH $PATH:/beast1/bin
 
 #Install beast 2.x
-#RUN curl -s "https://api.github.com/repos/CompEvol/beast2/releases/latest" | grep download | grep tgz | head -n 1 | awk '{print $2}' | xargs curl -L -o /beast2.tgz
-#RUN tar -zxvf beast2.tgz && rm beast2.tgz && mv beast beast2 && export PATH=$PATH:/beast2/bin/ && cd /
-#Temporary workaround, needs updating issue opened https://github.com/CompEvol/beast2/issues/875
-RUN wget -O /beast2.tgz https://github.com/CompEvol/beast2/releases/download/v2.6.0/BEAST.v2.6.0.Linux.tgz && \
-	tar -zxvf beast2.tgz && \
-	rm beast2.tgz && \
-	mv beast beast2 && \
-	cd /
-ENV PATH $PATH:/beast2/bin/
+RUN curl -s "https://api.github.com/repos/CompEvol/beast2/releases" | grep download | grep tgz | head -n 1 | awk '{print $2}' | xargs curl -L -o /beast2.tgz
+RUN tar -zxvf beast2.tgz && rm beast2.tgz && mv beast beast2
+ENV PATH $PATH:/beast2/bin
+#beast2 fallback:
+#RUN wget -O /beast2.tgz https://github.com/CompEvol/beast2/releases/download/v2.6.0/BEAST.v2.6.0.Linux.tgz && \
+#	tar -zxvf beast2.tgz && \
+#	rm beast2.tgz && \
+#	mv beast beast2 && \
+#	cd /
+#ENV PATH $PATH:/beast2/bin/
 
 #Install Figtree
 RUN curl -s "https://api.github.com/repos/rambaut/figtree/releases/latest" | jq --arg PLATFORM_ARCH "tgz" -r '.assets[] | select(.name | endswith($PLATFORM_ARCH)).browser_download_url' | xargs curl -L -o /figtree.tgz
@@ -171,7 +172,7 @@ ENV PATH $PATH:/FigTree/bin/
 #Install SnpEff (SnpSift included)
 RUN wget http://sourceforge.net/projects/snpeff/files/snpEff_latest_core.zip
 RUN unzip snpEff_latest_core.zip && rm snpEff_latest_core.zip
-ENV PATH $PATH:/snpEff/
+ENV PATH $PATH:/snpEff
 #Optional: The database directory can be changed in snpEff.config. Default is in the installation folder (./data/).
 #See: http://snpeff.sourceforge.net for more information
 
@@ -184,7 +185,7 @@ RUN wget -O /Circos.tgz http://circos.ca/distribution/circos-current.tgz && \
 RUN wget -O /miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
 	bash /miniconda.sh -b -f -p /miniconda/ && \
 	rm /miniconda.sh
-ENV PATH $PATH:/miniconda/bin/
+ENV PATH $PATH:/miniconda/bin
 RUN conda install -y anaconda && \
 	conda install -y -c bioconda mtbseq && \
 	mkdir /miniconda/mtbdependencies/ && \
@@ -216,7 +217,7 @@ RUN git clone https://github.com/scapella/trimal.git && \
 	cd trimal/source && \
 	make && \
 	cd /
-ENV PATH $PATH:/trimal/source/
+ENV PATH $PATH:/trimal/source
 #Install Racon
 RUN git clone --recursive https://github.com/isovic/racon.git racon && \
 	cd racon && \
@@ -245,7 +246,7 @@ RUN tar -zxvf tempest.tgz && \
 	rm tempest.tgz && \
 	mv TempEst* TempEst && \
 	cd /
-ENV PATH $PATH:/TempEst/bin/
+ENV PATH $PATH:/TempEst/bin
 
 #Install MEGA5 #May become outdated MOVE libgtk2 TO FRONT IF THIS WORKS
 RUN wget https://www.megasoftware.net/do_force_download/megax_10.0.5-1_amd64.deb #GUI version
