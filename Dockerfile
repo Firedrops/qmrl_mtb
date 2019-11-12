@@ -90,7 +90,13 @@ RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && c
 RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gradlew shadowJar && cd /
 
 #Install GATK4
-RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew && cd /
+#RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew && cd /
+
+#Install GATK4 ALTERNATIVE should be much smaller
+RUN curl -s "https://api.github.com/repos/broadinstitute/gatk/releases/latest" | grep download | grep tgz | head -n 1 | awk '{print $2}' | xargs curl -L -o /gatk4.zip
+RUN unzip gatk4.zip && rm gatk4.zip && \
+	mv gatk-4* gatk4
+ENV PATH $PATH:/gatk4
 
 #Install Trimmomatic
 RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ && make && make check && make install && cd /
