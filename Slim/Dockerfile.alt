@@ -1,3 +1,4 @@
+#Deprecated until I can figure out how to get apt/apt-get to work. Looks like a very old base (Linux 4.5.x)
 FROM quay.io/biocontainers/mtbseq:1.0.4--pl526_0
 LABEL maintainer="Larry Cai <larrycai.jpl@gmail.com>"
 
