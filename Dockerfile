@@ -93,7 +93,7 @@ RUN git clone https://github.com/broadinstitute/picard.git && cd picard/ && ./gr
 #RUN git clone https://github.com/broadinstitute/gatk.git && cd gatk/ && ./gradlew && cd /
 
 #Install GATK4 ALTERNATIVE should be much smaller
-RUN curl -s "https://api.github.com/repos/broadinstitute/gatk/releases/latest" | grep download | grep tgz | head -n 1 | awk '{print $2}' | xargs curl -L -o /gatk4.zip
+RUN curl -s "https://api.github.com/repos/broadinstitute/gatk/releases/latest" | grep download | grep zip | head -n 1 | awk '{print $2}' | xargs curl -L -o /gatk4.zip
 RUN unzip gatk4.zip && rm gatk4.zip && \
 	mv gatk-4* gatk4
 ENV PATH $PATH:/gatk4
