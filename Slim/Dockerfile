@@ -61,7 +61,7 @@ RUN git clone git://git.savannah.gnu.org/gsl.git && \
 RUN git clone https://github.com/samtools/htslib.git && cd htslib && make && make install && cd /
 
 #Install bcftools
-RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && make instalal && cd /
+RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && make install && cd /
 
 #Install Trimmomatic
 RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ && make && make check && make install && cd /
