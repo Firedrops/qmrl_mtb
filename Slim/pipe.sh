@@ -17,13 +17,13 @@ picard MarkDuplicates I=file_sorted.bam O=file_dup.bam M=file.txt
 
 picard BuildBamIndex I=file_dup.bam
 
-gatk3 -T RealignerTargetCreator -R reference.fasta -I file_dup.bam -o file.intervals
+gatk3 -T RealignerTargetCreator -R /data/reference.fasta -I file_dup.bam -o file.intervals
 
-gatk3 -T IndelRealigner -R reference.fasta -I file_dup.bam -targetIntervals file.intervals -o file_dup_alig.bam
+gatk3 -T IndelRealigner -R /data/reference.fasta -I file_dup.bam -targetIntervals file.intervals -o file_dup_alig.bam
 
-gatk3 -T UnifiedGenotyper -R reference.fasta -I files.list -A AlleleBalance -pnrm EXACT_GENERAL_PLOIDY -ploidy 1 -glm SNP -o files.vcf
+gatk3 -T UnifiedGenotyper -R /data/reference.fasta -I files.list -A AlleleBalance -pnrm EXACT_GENERAL_PLOIDY -ploidy 1 -glm SNP -o files.vcf
 
-gatk3 -T VariantFiltration -R reference.fasta -V files.vcf --filterExpression "((DP-MQ0)<10) || ((MQ0/(1.0*DP))>=0.8) || (ABHom <0.8) || (Dels >0.5) || (QUAL > 90)" --filterName LowConfidence -o files_filtered.vcf
+gatk3 -T VariantFiltration -R /data/reference.fasta -V files.vcf --filterExpression "((DP-MQ0)<10) || ((MQ0/(1.0*DP))>=0.8) || (ABHom <0.8) || (Dels >0.5) || (QUAL > 90)" --filterName LowConfidence -o files_filtered.vcf
 
 vcftools --vcf files_filtered.vcf --recode --keep-INFO-all
 
@@ -31,7 +31,7 @@ for file in files_filtered.vcf;do for sample in `bcftools view -h $file | grep "
 
 vcf_filter_module.py 9 in.vcf out.vcf
 
-gatk3 -T CombineVariants -R reference.fasta –V vcf1 vcf2 vcf3 -genotypeMergeOptions UNIQUIFY –o master.vcf
+gatk3 -T CombineVariants -R /data/reference.fasta –V vcf1 vcf2 vcf3 -genotypeMergeOptions UNIQUIFY –o master.vcf
 
 zcat master.vcf.gz | vcf-to-tab > snps.tab
 
