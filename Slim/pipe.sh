@@ -34,7 +34,9 @@ bcftools view -c1 -s RB17MT0722 -o in.vcf out.recode.vcf
 
 vcf_filter_module.py 9 in.vcf out.vcf
 
-gatk3 -T CombineVariants -R /data/reference.fasta –V vcf1 vcf2 vcf3 -genotypeMergeOptions UNIQUIFY –o master.vcf
+#gatk3 -T CombineVariants -R /data/reference.fasta –V vcf1 vcf2 vcf3 -genotypeMergeOptions UNIQUIFY –o master.vcf
+#gatk3 -T CombineVariants -R /data/reference.fasta -–variant out.vcf -o master.vcf -genotypeMergeOptions UNIQUIFY
+cat out.vcf | bgzip -c > master.vcf.gz
 
 zcat master.vcf.gz | vcf-to-tab > snps.tab
 
