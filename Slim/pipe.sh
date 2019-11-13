@@ -32,7 +32,7 @@ vcftools --vcf files_filtered.vcf --recode --keep-INFO-all
 #for file in files_filtered.vcf;do for sample in `bcftools view -h $file | grep "^#CHROM" | cut  -f10-`; do bcftools view -c1 -s $sample -o ${file/.vcf*/.$sample.vcf} $file;done;done
 bcftools view -c1 -s RB17MT0722 -o in.vcf out.recode.vcf
 
-vcf_filter_module.py 9 in.vcf out.vcf
+python vcf_filter_module.py 9 in.vcf out.vcf
 
 #gatk3 -T CombineVariants -R /data/reference.fasta –V vcf1 vcf2 vcf3 -genotypeMergeOptions UNIQUIFY –o master.vcf
 #gatk3 -T CombineVariants -R /data/reference.fasta -–variant out.vcf -o master.vcf -genotypeMergeOptions UNIQUIFY
@@ -40,4 +40,4 @@ cat out.vcf | bgzip -c > master.vcf.gz
 
 zcat master.vcf.gz | vcf-to-tab > snps.tab
 
-vcf_tab_to_fasta_alignment.pl -i snps.tab > all_snps.fasta
+./vcf_tab_to_fasta_alignment.pl -i snps.tab > all_snps.fasta
