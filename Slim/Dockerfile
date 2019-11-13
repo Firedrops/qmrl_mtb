@@ -52,8 +52,8 @@ ENV PATH $PATH:/beast2/bin
 #Install Trimmomatic
 RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ && make && make check && make install && cd /
 
-#Copy script
-COPY tb_github.sh /
+#Copy scripts
+COPY *.sh .
 
 #Make data folder to mount nectar data to
 RUN mkdir /data
