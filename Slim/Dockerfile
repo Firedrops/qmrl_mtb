@@ -48,3 +48,30 @@ RUN git clone https://github.com/vcftools/vcftools.git && \
 RUN curl -s "https://api.github.com/repos/CompEvol/beast2/releases" | grep download | grep tgz | head -n 1 | awk '{print $2}' | xargs curl -L -o /beast2.tgz
 RUN tar -zxvf beast2.tgz && rm beast2.tgz && mv beast beast2
 ENV PATH $PATH:/beast2/bin
+
+#Install GSL & htslib, prerequisites for bcftools
+RUN git clone git://git.savannah.gnu.org/gsl.git && \
+	cd /gsl && \
+	./autogen.sh && \
+	./configure && \
+	make && \
+	make install && \
+	cd /
+
+RUN git clone https://github.com/samtools/htslib.git && cd htslib && make && make install && cd /
+
+#Install bcftools
+RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && make install && cd /
+
+#Install Trimmomatic
+RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ && make && make check && make install && cd /
+
+#Set PERL thingy for vcftools
+ENV PERL5LIB=/vcftools/src/perl/
+
+#Make data folder to mount nectar data to
+RUN mkdir /data
+
+#Copy scripts
+COPY pipe.sh vcf_filter_module.py vcf_tab_to_fasta_alignment.pl ./
+
