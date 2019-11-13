@@ -49,4 +49,11 @@ RUN curl -s "https://api.github.com/repos/CompEvol/beast2/releases" | grep downl
 RUN tar -zxvf beast2.tgz && rm beast2.tgz && mv beast beast2
 ENV PATH $PATH:/beast2/bin
 
+#Install Trimmomatic
+RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ && make && make check && make install && cd /
+
+#Copy script
+COPY tb_github.sh /
+
+#Make data folder to mount nectar data to
 RUN mkdir /data
