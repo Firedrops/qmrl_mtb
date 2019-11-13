@@ -66,6 +66,9 @@ RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && m
 #Install Trimmomatic
 RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ && make && make check && make install && cd /
 
+#Set PERL thingy for vcftools
+ENV PERL5LIB=/vcftools/src/perl/
+
 #Make data folder to mount nectar data to
 RUN mkdir /data
 
