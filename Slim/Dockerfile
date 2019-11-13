@@ -73,6 +73,5 @@ ENV PERL5LIB=/vcftools/src/perl/
 RUN mkdir /data
 
 #Copy scripts
-COPY pipe.sh /
-COPY vcf_filter_module.py /
+COPY pipe.sh vcf_filter_module.py vcf_tab_to_fasta_alignment.pl ./
 
