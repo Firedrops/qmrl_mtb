@@ -1,5 +1,7 @@
 Bootstrap: docker
-From: continuumio/anaconda
+From: anaconda
+Registry: continuum.io
+Namespace: 
 Label: maintainer="Larry Cai <larrycai.jpl@gmail.com>"
 
 #Install various dependencies. I am not sure that all of them are needed, just cloned all for now to save time.
