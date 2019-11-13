@@ -56,6 +56,6 @@ RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ &&
 RUN mkdir /data
 
 #Copy scripts
-COPY . ./
+COPY scripts /home/
 
 
