@@ -74,4 +74,5 @@ RUN mkdir /data
 
 #Copy scripts
 COPY pipe.sh /
+COPY vcf_filter_module.py /
 
