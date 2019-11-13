@@ -3,6 +3,8 @@ shift
 NAME=$1
 shift
 
+bwa index /data/reference.fasta
+
 java -jar /trimmomatic/classes/trimmomatic.jar PE -phred33 -trimlog ${file}_log.txt ${file}_R1.fastq.gz ${file}_R2.fastq.gz ${file}_paired_R1.fastq.gz ${file}_unpaired_R1.fastq.gz ${file}_paired_R2.fastq.gz ${file}_unpaired_R2.fastq.gz ILLUMINACLIP:/trimmomatic/adapters/NexteraPE-PE.fa:2:30:10 LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:36
 
 bwa mem -t 4 -M -R "@RG\tID:${NAME}\tSM:${NAME}\tPL:Illumina\tLB:001\tPU:001" /data/reference.fasta file_R1.fastq.gz file_R2.fastq.gz > file.sam
