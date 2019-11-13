@@ -12,8 +12,9 @@ RUN apt-get -qqy update && apt-get install -qqy \
         openssh-client \
         git \
         gnupg
-	
-ENV IMAGE_PACKAGES="zlib1g-dev libz-dev libbz2-dev liblzma-dev libperl-dev libcurl4-gnutls-dev libgconf-2-4 libssl-dev libncurses5-dev libopenblas-base libtool libx11-dev libxext-dev libxrender-dev libxrandr-dev libxtst-dev libxt-dev libcups2-dev libasound2-dev pkg-config build-essential perl python-pip python3-pip autoconf automake jq ruby apache2 bwa gzip kalign tar wget vim ant bedtools"
+
+RUN mkdir -p /usr/share/man/man1
+ENV IMAGE_PACKAGES="apt-utils zlib1g-dev libz-dev libbz2-dev liblzma-dev libperl-dev libcurl4-gnutls-dev libgconf-2-4 libssl-dev libncurses5-dev libopenblas-base libtool libx11-dev libxext-dev libxrender-dev libxrandr-dev libxtst-dev libxt-dev libcups2-dev libasound2-dev pkg-config build-essential perl python-pip python3-pip autoconf automake jq ruby apache2 bwa gzip kalign tar wget vim ant bedtools"
 RUN apt -y update && apt -y install $IMAGE_PACKAGES
 ENV PIP_PACKAGES="gsalib reshape"
 RUN pip install $PIP_PACKAGES
