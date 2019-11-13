@@ -49,6 +49,20 @@ RUN curl -s "https://api.github.com/repos/CompEvol/beast2/releases" | grep downl
 RUN tar -zxvf beast2.tgz && rm beast2.tgz && mv beast beast2
 ENV PATH $PATH:/beast2/bin
 
+#Install GSL & htslib, prerequisites for bcftools
+RUN git clone git://git.savannah.gnu.org/gsl.git && \
+	cd /gsl && \
+	./autogen.sh && \
+	./configure && \
+	make && \
+	make install && \
+	cd /
+
+RUN git clone https://github.com/samtools/htslib.git && cd htslib && make && cd /
+
+#Install bcftools
+RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && cd /
+
 #Install Trimmomatic
 RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ && make && make check && make install && cd /
 
