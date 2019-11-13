@@ -48,3 +48,5 @@ RUN git clone https://github.com/vcftools/vcftools.git && \
 RUN curl -s "https://api.github.com/repos/CompEvol/beast2/releases" | grep download | grep tgz | head -n 1 | awk '{print $2}' | xargs curl -L -o /beast2.tgz
 RUN tar -zxvf beast2.tgz && rm beast2.tgz && mv beast beast2
 ENV PATH $PATH:/beast2/bin
+
+RUN mkdir /data
