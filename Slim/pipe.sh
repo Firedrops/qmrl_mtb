@@ -23,7 +23,7 @@ gatk3 -T RealignerTargetCreator -R /data/reference.fasta -I file_dup.bam -o file
 
 gatk3 -T IndelRealigner -R /data/reference.fasta -I file_dup.bam -targetIntervals file.intervals -o file_dup_alig.bam
 
-gatk3 -T UnifiedGenotyper -R /data/reference.fasta -I files.list -A AlleleBalance -pnrm EXACT_GENERAL_PLOIDY -ploidy 1 -glm SNP -o files.vcf
+gatk3 -T UnifiedGenotyper -R /data/reference.fasta -I file_dup_alig.bam -A AlleleBalance -pnrm EXACT_GENERAL_PLOIDY -ploidy 1 -glm SNP -o files.vcf
 
 gatk3 -T VariantFiltration -R /data/reference.fasta -V files.vcf --filterExpression "((DP-MQ0)<10) || ((MQ0/(1.0*DP))>=0.8) || (ABHom <0.8) || (Dels >0.5) || (QUAL > 90)" --filterName LowConfidence -o files_filtered.vcf
 
