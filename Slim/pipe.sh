@@ -1,3 +1,4 @@
+#!/bin/bash
 #Example usage: ./pipe.sh /data/ RB17MT1804 /data/H37Rv_refe /data/temp /data/out
 
 #establishes variables
