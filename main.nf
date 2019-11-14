@@ -8,7 +8,7 @@
  */ 
 
 params.genome     = "$baseDir/data/H37Rv_refe.fasta"
-params.reads      = "$baseDir/data/RB17MT24703_R{1,2}.fastq.gz"
+params.reads      = "$baseDir/data/*_R{1,2}.fastq.gz"
 params.results    = "results"
 params.gatk       = '/usr/local/bin/GenomeAnalysisTK.jar'
 params.gatk_launch = "java -jar $params.gatk" 
@@ -153,9 +153,7 @@ process '1C_prepare_genome_picard' {
     """
     java -jar ${TRIMMOMATIC}/trimmomatic.jar \
       PE -phred33 \
-	  $forward $reverse
-      -threads ${threads} \
-      $forward $reverse -baseout ${sample_id} \
+      $forward $reverse  \
       ILLUMINACLIP:${adapters}:2:30:10 \
       LEADING:${leading} \
       TRAILING:${trailing} \
