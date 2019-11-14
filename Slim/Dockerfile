@@ -76,5 +76,5 @@ RUN mkdir /data
 COPY pipe.sh vcf_filter_module.py vcf_tab_to_fasta_alignment.pl ./
 
 #Make executable
-RUN chmod +x /vcf_filter_module.py /vcf_tab_to_fasta_alignment.pl
+RUN chmod +x pipe.sh /vcf_filter_module.py /vcf_tab_to_fasta_alignment.pl
 
