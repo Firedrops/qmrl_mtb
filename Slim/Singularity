@@ -1,5 +1,8 @@
-FROM continuumio/anaconda
-LABEL maintainer="Larry Cai <larrycai.jpl@gmail.com>"
+Bootstrap: docker
+From: anaconda
+Registry: continuum.io
+Namespace: 
+Label: maintainer="Larry Cai <larrycai.jpl@gmail.com>"
 
 #Install various dependencies. I am not sure that all of them are needed, just cloned all for now to save time.
 RUN apt-get -qqy update && apt-get install -qqy \
@@ -74,7 +77,4 @@ RUN mkdir /data
 
 #Copy scripts
 COPY pipe.sh vcf_filter_module.py vcf_tab_to_fasta_alignment.pl ./
-
-#Make executable
-RUN chmod +x /vcf_filter_module.py /vcf_tab_to_fasta_alignment.pl
 
