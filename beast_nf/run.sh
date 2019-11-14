@@ -1,0 +1,1 @@
+java -Xms64m -Xmx8092m -Djava.library.path=/swold/beast/BEASTv1.8.2/lib:/usr/local/lib:/swold/beast/beagle-lib/lib/ -cp /swold/beast/BEASTv1.8.2/lib/beast.jar:/swold/beast/BEASTv1.8.2/lib/beast-beagle.jar dr.app.beast.BeastMain DARU_95_real_f5_beast1_trial1_3.xml
