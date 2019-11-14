@@ -70,7 +70,7 @@ gatk3 -T VariantFiltration -R ${reference}.fasta -V ${outdir}${NAME}.vcf --filte
 vcftools --vcf ${outdir}${NAME}_filtered.vcf --recode --keep-INFO-all
 
 #for ${indir}${NAME} in ${indir}${NAME}s_filtered.vcf;do for sample in `bcftools view -h $${indir}${NAME} | grep "^#CHROM" | cut  -f10-`; do bcftools view -c1 -s $sample -o ${${indir}${NAME}/.vcf*/.$sample.vcf} $${indir}${NAME};done;done
-bcftools view -c1 -s RB17MT0722 -o ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}_out.recode.vcf
+bcftools view -c1 -s ${NAME} -o ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}_out.recode.vcf
 
 python vcf_filter_module.py 9 ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}_out.vcf
 
