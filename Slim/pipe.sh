@@ -11,6 +11,7 @@ shift
 outdir=$1_${NAME}/
 shift
 
+#TODO: Add check for these 3 index/dictionary files.
 bwa index ${reference}
 samtools faidx ${reference}
 picard CreateSequenceDictionary R=${reference} O=${reference}.dict
