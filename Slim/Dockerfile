@@ -43,7 +43,7 @@ RUN git clone https://github.com/vcftools/vcftools.git && \
 	make && \
 	make install && \
 	cd /
-  
+
 #Install beast 2.x
 RUN curl -s "https://api.github.com/repos/CompEvol/beast2/releases" | grep download | grep tgz | head -n 1 | awk '{print $2}' | xargs curl -L -o /beast2.tgz
 RUN tar -zxvf beast2.tgz && rm beast2.tgz && mv beast beast2
@@ -78,3 +78,4 @@ COPY pipe.sh vcf_filter_module.py vcf_tab_to_fasta_alignment.pl ./
 #Make executable
 RUN chmod +x pipe.sh /vcf_filter_module.py /vcf_tab_to_fasta_alignment.pl
 
+ENTRYPOINT ["pipe.sh"]
