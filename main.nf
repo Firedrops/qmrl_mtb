@@ -1,8 +1,6 @@
 #!/usr/bin/env nextflow
 /*call with nextflow run main.nf -with-docker qimr_slim */
 
-
-
 /**********
  * Define the default parameters
  **********/
@@ -407,22 +405,22 @@ process '2A_bwa_mem_alignment' {
       **********/
 
      /**********
-     * Process 5A  bgzip
+     * Process 5A bgzip
      *   cat ${tempdir}${NAME}_out.vcf | bgzip -c > ${outdir}${NAME}_master.vcf.gz
      **********/
 
-     process '3A_gatk_RealignerTarget' {
+     process '5A_bgzp_vcf' {
        tag "$genome.baseName"
 
           input:
-          file "${tempdir}${NAME}_out.vcf" from vcf_out_files
+          file "${genome.baseName}_out.vcf" from vcf_out_files
 
           output:
-          file "${tempdir}${NAME}_master.vcf.gz" into vcf_master_files
+          file "${genome.baseName}_master.vcf.gz" into vcf_master_files
 
           script:
           """
-          cat ${tempdir}${NAME}_out.vcf | bgzip -c > ${outdir}${NAME}_master.vcf.gz
+          cat ${genome.baseName}_out.vcf | bgzip -c > ${genome.baseName}_master.vcf.gz
           """
      }
 
@@ -430,18 +428,42 @@ process '2A_bwa_mem_alignment' {
      * Process 5B tab conversion
      *   zcat ${outdir}${NAME}_master.vcf.gz | vcf-to-tab > ${tempdir}${NAME}_snps.tab
      **********/
-TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-     process '3A_gatk_RealignerTarget' {
+
+     process '5B_vcf_to_tab' {
        tag "$genome.baseName"
 
           input:
-          file "${tempdir}${NAME}_out.vcf" from vcf_out_files
+           file "${genome.baseName}_master.vcf.gz" from vcf_master_files
 
           output:
-          file "${tempdir}${NAME}_master.vcf.gz" into vcf_master_files
+          file "${genome.baseName}_snps.tab" into snps_files
 
           script:
           """
-          cat ${tempdir}${NAME}_out.vcf | bgzip -c > ${outdir}${NAME}_master.vcf.gz
+          zcat ${genome.baseName}_master.vcf.gz | vcf-to-tab > ${genome.baseName}_snps.tab
           """
      }
+     
+
+     /**********
+     * Process 5C all snps fasta
+     *   ./vcf_tab_to_fasta_alignment.pl -i ${tempdir}${NAME}_snps.tab > ${outdir}${NAME}_all_snps.fasta
+     **********/
+
+     process '5B_vcf_to_tab' {
+       tag "$genome.baseName"
+
+          input:
+          file "${genome.baseName}_snps.tab" from snps_files
+
+          output:
+          file "${genome.baseName}_all_snps.fasta" into all_snps_files
+
+          script:
+          """
+          ./vcf_tab_to_fasta_alignment.pl -i ${genome.baseName}_snps.tab > ${genome.baseName}_all_snps.fasta
+          """
+     }
+
+
+
