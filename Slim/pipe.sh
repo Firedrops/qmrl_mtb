@@ -1,5 +1,6 @@
-#Example usage: ./pipe.sh /data/ RB17MT1804 /data/H37Rv_refe.fasta /data/temp /data/out
+#Example usage: ./pipe.sh /data/ RB17MT1804 /data/H37Rv_refe /data/temp /data/out
 
+#establishes variables
 indir=$1
 shift
 NAME=$1
@@ -11,16 +12,44 @@ shift
 outdir=$1_${NAME}/
 shift
 
-#TODO: Add check for these 3 index/dictionary files.
-bwa index ${reference}
-samtools faidx ${reference}
-picard CreateSequenceDictionary R=${reference} O=${reference}.dict
+#checks for pre-existing indices/dictionary
+echo "Checking for bwa index. Note: Only checks for .amb and assumes other files are also present if found."
+if [ -f "${reference}.fasta.amb" ]
+then
+	echo "index found, skipping indexing step."
+else
+	echo "index not found, proceeding with generating index"
+  echo "bwa index ${reference}.fasta"
+  bwa index ${reference}.fasta
+fi
+
+echo "Checking for samtools index."
+if [ -f "${reference}.fasta.fai" ]
+then
+	echo "index found, skipping indexing step."
+else
+	echo "index not found, proceeding with generating index"
+  echo "samtools faidx ${reference}.fasta"
+  samtools faidx ${reference}.fasta
+fi
+
+echo "Checking for picard dictionary."
+if [ -f "${reference}.fasta.dict" ]
+then
+	echo "dictionary found, skipping generation step."
+else
+	echo "dictionary not found, proceeding with generating dictionary"
+  echo "picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict"
+  picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict
+fi
+
+#make unique temporary and output directories
 mkdir $tempdir
 mkdir $outdir
 
 #java -jar /trimmomatic/classes/trimmomatic.jar PE -phred33 -trimlog ${tempdir}${NAME}_log.txt ${indir}${NAME}_R1.fastq.gz ${indir}${NAME}_R2.fastq.gz ${tempdir}${NAME}_paired_R1.fastq.gz ${tempdir}${NAME}_unpaired_R1.fastq.gz ${tempdir}${NAME}_paired_R2.fastq.gz ${tempdir}${NAME}_unpaired_R2.fastq.gz ILLUMINACLIP:/trimmomatic/adapters/NexteraPE-PE.fa:2:30:10 LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:36
 
-bwa mem -t 4 -M -R "@RG\tID:${NAME}\tSM:${NAME}\tPL:Illumina\tLB:001\tPU:001" ${reference} ${indir}${NAME}_R1.fastq.gz ${indir}${NAME}_R2.fastq.gz > ${tempdir}${NAME}.sam
+bwa mem -t 4 -M -R "@RG\tID:${NAME}\tSM:${NAME}\tPL:Illumina\tLB:001\tPU:001" ${reference}.fasta ${indir}${NAME}_R1.fastq.gz ${indir}${NAME}_R2.fastq.gz > ${tempdir}${NAME}.sam
 
 samtools view -bS -F 4 ${tempdir}${NAME}.sam > ${tempdir}${NAME}.bam
 
@@ -30,13 +59,13 @@ picard MarkDuplicates I=${tempdir}${NAME}_sorted.bam O=${tempdir}${NAME}_dup.bam
 
 picard BuildBamIndex I=${tempdir}${NAME}_dup.bam
 
-gatk3 -T RealignerTargetCreator -R ${reference} -I ${tempdir}${NAME}_dup.bam -o ${tempdir}${NAME}.intervals
+gatk3 -T RealignerTargetCreator -R ${reference}.fasta -I ${tempdir}${NAME}_dup.bam -o ${tempdir}${NAME}.intervals
 
-gatk3 -T IndelRealigner -R ${reference} -I ${tempdir}${NAME}_dup.bam -targetIntervals ${tempdir}${NAME}.intervals -o ${outdir}${NAME}_dup_alig.bam
+gatk3 -T IndelRealigner -R ${reference}.fasta -I ${tempdir}${NAME}_dup.bam -targetIntervals ${tempdir}${NAME}.intervals -o ${outdir}${NAME}_dup_alig.bam
 
-gatk3 -T UnifiedGenotyper -R ${reference} -I ${outdir}${NAME}_dup_alig.bam -A AlleleBalance -pnrm EXACT_GENERAL_PLOIDY -ploidy 1 -glm SNP -o ${outdir}${NAME}.vcf
+gatk3 -T UnifiedGenotyper -R ${reference}.fasta -I ${outdir}${NAME}_dup_alig.bam -A AlleleBalance -pnrm EXACT_GENERAL_PLOIDY -ploidy 1 -glm SNP -o ${outdir}${NAME}.vcf
 
-gatk3 -T VariantFiltration -R ${reference} -V ${outdir}${NAME}.vcf --filterExpression "((DP-MQ0)<10) || ((MQ0/(1.0*DP))>=0.8) || (ABHom <0.8) || (Dels >0.5) || (QUAL > 90)" --filterName LowConfidence -o ${outdir}${NAME}_filtered.vcf
+gatk3 -T VariantFiltration -R ${reference}.fasta -V ${outdir}${NAME}.vcf --filterExpression "((DP-MQ0)<10) || ((MQ0/(1.0*DP))>=0.8) || (ABHom <0.8) || (Dels >0.5) || (QUAL > 90)" --filterName LowConfidence -o ${outdir}${NAME}_filtered.vcf
 
 vcftools --vcf ${outdir}${NAME}_filtered.vcf --recode --keep-INFO-all
 
@@ -52,3 +81,9 @@ cat ${tempdir}${NAME}_out.vcf | bgzip -c > ${outdir}${NAME}_master.vcf.gz
 zcat ${outdir}${NAME}_master.vcf.gz | vcf-to-tab > ${tempdir}${NAME}_snps.tab
 
 ./vcf_tab_to_fasta_alignment.pl -i ${tempdir}${NAME}_snps.tab > ${outdir}${NAME}_all_snps.fasta
+
+#Make sure nectar users can access
+chmod -R 777 ${tempdir}${NAME} .
+chmod -R 777 ${outdir}${NAME} .
+
+echo "Pipeline finished. Please check ${tempdir} and delete if not needed."
