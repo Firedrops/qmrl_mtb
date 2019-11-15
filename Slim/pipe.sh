@@ -68,10 +68,10 @@ gatk3 -T UnifiedGenotyper -R ${reference}.fasta -I ${outdir}${NAME}_dup_alig.bam
 
 gatk3 -T VariantFiltration -R ${reference}.fasta -V ${outdir}${NAME}.vcf --filterExpression "((DP-MQ0)<10) || ((MQ0/(1.0*DP))>=0.8) || (ABHom <0.8) || (Dels >0.5) || (QUAL > 90)" --filterName LowConfidence -o ${outdir}${NAME}_filtered.vcf
 
-vcftools --vcf ${outdir}${NAME}_filtered.vcf --recode --keep-INFO-all
+vcftools --vcf ${outdir}${NAME}_filtered.vcf --out ${outdir}${NAME} --recode --keep-INFO-all
 
 #for ${indir}${NAME} in ${indir}${NAME}s_filtered.vcf;do for sample in `bcftools view -h $${indir}${NAME} | grep "^#CHROM" | cut  -f10-`; do bcftools view -c1 -s $sample -o ${${indir}${NAME}/.vcf*/.$sample.vcf} $${indir}${NAME};done;done
-bcftools view -c1 -s ${NAME} -o ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}_out.recode.vcf
+bcftools view -c1 -s ${NAME} -o ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}.recode.vcf
 
 python vcf_filter_module.py 9 ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}_out.vcf
 
@@ -84,7 +84,7 @@ zcat ${outdir}${NAME}_master.vcf.gz | vcf-to-tab > ${tempdir}${NAME}_snps.tab
 ./vcf_tab_to_fasta_alignment.pl -i ${tempdir}${NAME}_snps.tab > ${outdir}${NAME}_all_snps.fasta
 
 #Make sure nectar users can access
-chmod -R 777 ${tempdir}${NAME} .
-chmod -R 777 ${outdir}${NAME} .
+chmod -R 777 ${tempdir}${NAME}
+chmod -R 777 ${outdir}${NAME}
 
 echo "Pipeline finished. Please check ${tempdir} and delete if not needed."
