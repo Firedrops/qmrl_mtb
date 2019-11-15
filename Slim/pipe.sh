@@ -15,33 +15,33 @@ outdir=$1_${NAME}/
 shift
 
 #checks for pre-existing indices/dictionary
-printf("Checking for bwa index./nNote: Only checks for .amb and assumes other files are also present if found./n")
+printf "Checking for bwa index./nNote: Only checks for .amb and assumes other files are also present if found./n"
 if [ -f "${reference}.fasta.amb" ]
 then
-	printf("index found, skipping indexing step./n")
+	printf "index found, skipping indexing step./n"
 else
-	printf("index not found, proceeding with generating index./n")
-  printf("bwa index ${reference}.fasta")
+	printf "index not found, proceeding with generating index./n"
+  printf "bwa index ${reference}.fasta"
   bwa index ${reference}.fasta
 fi
 
-printf("Checking for samtools index./n")
+printf "Checking for samtools index./n"
 if [ -f "${reference}.fasta.fai" ]
 then
-	printf("index found, skipping indexing step./n")
+	printf "index found, skipping indexing step./n"
 else
-	printf("index not found, proceeding with generating index./n")
-  printf("samtools faidx ${reference}.fasta")
+	printf "index not found, proceeding with generating index./n"
+  printf "samtools faidx ${reference}.fasta"
   samtools faidx ${reference}.fasta
 fi
 
-printf("Checking for picard dictionary./n")
+printf "Checking for picard dictionary./n"
 if [ -f "${reference}.fasta.dict" ]
 then
-	printf("dictionary found, skipping generation step./n")
+	printf "dictionary found, skipping generation step./n"
 else
-	printf("dictionary not found, proceeding with generating dictionary./n")
-  printf"picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict/n"
+	printf "dictionary not found, proceeding with generating dictionary./n"
+  printf "picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict/n"
   picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict
 fi
 
@@ -91,4 +91,4 @@ python vcf_filter_module.py 9 ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}_out.vcf
 chmod -R 777 ${tempdir}
 chmod -R 777 ${outdir}
 
-printf("Pipeline finished. Please check ${tempdir} and delete if not needed.")
+printf "Pipeline finished. Please check ${tempdir} and delete if not needed."
