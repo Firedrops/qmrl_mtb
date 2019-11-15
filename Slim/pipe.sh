@@ -14,33 +14,33 @@ outdir=$1_${NAME}/
 shift
 
 #checks for pre-existing indices/dictionary
-echo "Checking for bwa index. Note: Only checks for .amb and assumes other files are also present if found."
+printf "Checking for bwa index./nNote: Only checks for .amb and assumes other files are also present if found./n"
 if [ -f "${reference}.fasta.amb" ]
 then
-	echo "index found, skipping indexing step."
+	printf "index found, skipping indexing step./n"
 else
-	echo "index not found, proceeding with generating index"
-  echo "bwa index ${reference}.fasta"
+	printf "index not found, proceeding with generating index./n"
+  printf "bwa index ${reference}.fasta"
   bwa index ${reference}.fasta
 fi
 
-echo "Checking for samtools index."
+echo "Checking for samtools index./n"
 if [ -f "${reference}.fasta.fai" ]
 then
-	echo "index found, skipping indexing step."
+	printf "index found, skipping indexing step./n"
 else
-	echo "index not found, proceeding with generating index"
-  echo "samtools faidx ${reference}.fasta"
+	printf "index not found, proceeding with generating index./n"
+  printf "samtools faidx ${reference}.fasta"
   samtools faidx ${reference}.fasta
 fi
 
-echo "Checking for picard dictionary."
+printf "Checking for picard dictionary./n"
 if [ -f "${reference}.fasta.dict" ]
 then
-	echo "dictionary found, skipping generation step."
+	printf "dictionary found, skipping generation step./n"
 else
-	echo "dictionary not found, proceeding with generating dictionary"
-  echo "picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict"
+	printf "dictionary not found, proceeding with generating dictionary./n"
+  echo "picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict/n"
   picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict
 fi
 
@@ -87,4 +87,4 @@ zcat ${outdir}${NAME}_master.vcf.gz | vcf-to-tab > ${tempdir}${NAME}_snps.tab
 chmod -R 777 ${tempdir}
 chmod -R 777 ${outdir}
 
-echo "Pipeline finished. Please check ${tempdir} and delete if not needed."
+printf "Pipeline finished. Please check ${tempdir} and delete if not needed."
