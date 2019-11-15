@@ -79,4 +79,5 @@ COPY pipe.sh /usr/local/bin/
 #Make executable
 RUN chmod +x /usr/local/bin/pipe.sh /pipe.sh /vcf_filter_module.py /vcf_tab_to_fasta_alignment.pl
 
+WORKDIR /
 ENTRYPOINT ["./pipe.sh"]
