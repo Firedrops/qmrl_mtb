@@ -74,10 +74,9 @@ RUN mkdir /data
 
 #Copy scripts
 COPY pipe.sh vcf_filter_module.py vcf_tab_to_fasta_alignment.pl ./
-#COPY pipe.sh /usr/local/bin/ 
+COPY pipe.sh /usr/local/bin/ 
 
 #Make executable
-RUN chmod +x /pipe.sh /vcf_filter_module.py /vcf_tab_to_fasta_alignment.pl
-ENV PATH $PATH:/
+RUN chmod +x /usr/local/bin/pipe.sh /pipe.sh /vcf_filter_module.py /vcf_tab_to_fasta_alignment.pl
 
 ENTRYPOINT ["./pipe.sh"]
