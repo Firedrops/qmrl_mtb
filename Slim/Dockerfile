@@ -78,5 +78,6 @@ COPY pipe.sh vcf_filter_module.py vcf_tab_to_fasta_alignment.pl ./
 
 #Make executable
 RUN chmod +x /pipe.sh /vcf_filter_module.py /vcf_tab_to_fasta_alignment.pl
+ENV PATH $PATH:/
 
 ENTRYPOINT ["./pipe.sh"]
