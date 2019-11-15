@@ -15,33 +15,33 @@ outdir=$1_${NAME}/
 shift
 
 #checks for pre-existing indices/dictionary
-printf "Checking for bwa index./nNote: Only checks for .amb and assumes other files are also present if found./n"
+printf("Checking for bwa index./nNote: Only checks for .amb and assumes other files are also present if found./n")
 if [ -f "${reference}.fasta.amb" ]
 then
-	printf "index found, skipping indexing step./n"
+	printf("index found, skipping indexing step./n")
 else
-	printf "index not found, proceeding with generating index./n"
-  printf "bwa index ${reference}.fasta"
+	printf("index not found, proceeding with generating index./n")
+  printf("bwa index ${reference}.fasta")
   bwa index ${reference}.fasta
 fi
 
-echo "Checking for samtools index./n"
+printf("Checking for samtools index./n")
 if [ -f "${reference}.fasta.fai" ]
 then
-	printf "index found, skipping indexing step./n"
+	printf("index found, skipping indexing step./n")
 else
-	printf "index not found, proceeding with generating index./n"
-  printf "samtools faidx ${reference}.fasta"
+	printf("index not found, proceeding with generating index./n")
+  printf("samtools faidx ${reference}.fasta")
   samtools faidx ${reference}.fasta
 fi
 
-printf "Checking for picard dictionary./n"
+printf("Checking for picard dictionary./n")
 if [ -f "${reference}.fasta.dict" ]
 then
-	printf "dictionary found, skipping generation step./n"
+	printf("dictionary found, skipping generation step./n")
 else
-	printf "dictionary not found, proceeding with generating dictionary./n"
-  echo "picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict/n"
+	printf("dictionary not found, proceeding with generating dictionary./n")
+  printf"picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict/n"
   picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict
 fi
 
@@ -71,21 +71,25 @@ gatk3 -T VariantFiltration -R ${reference}.fasta -V ${outdir}${NAME}.vcf --filte
 
 vcftools --vcf ${outdir}${NAME}_filtered.vcf --out ${tempdir}${NAME} --recode --keep-INFO-all
 
+#This command is to be run when all pairs have been processed, using data from all of them. WIP.
+
 #for ${indir}${NAME} in ${indir}${NAME}s_filtered.vcf;do for sample in `bcftools view -h $${indir}${NAME} | grep "^#CHROM" | cut  -f10-`; do bcftools view -c1 -s $sample -o ${${indir}${NAME}/.vcf*/.$sample.vcf} $${indir}${NAME};done;done
-bcftools view -c1 -s ${NAME} -o ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}.recode.vcf
+## shortcut alternative for when testing with 1 file:
+#bcftools view -c1 -s ${NAME} -o ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}.recode.vcf
 
-python vcf_filter_module.py 9 ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}_out.vcf
+#Commands below are to be run on the file generated in the previous step.
+#python vcf_filter_module.py 9 ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}_out.vcf
 
-#gatk3 -T CombineVariants -R /data/reference.fasta –V vcf1 vcf2 vcf3 -genotypeMergeOptions UNIQUIFY –o master.vcf
-#gatk3 -T CombineVariants -R /data/reference.fasta -–variant out.vcf -o master.vcf -genotypeMergeOptions UNIQUIFY
-cat ${tempdir}${NAME}_out.vcf | bgzip -c > ${outdir}${NAME}_master.vcf.gz
+#gatk3 -T CombineVariants -R /data/reference.fasta -–variant *.out.vcf -o master.vcf -genotypeMergeOptions UNIQUIFY
+## shortcut alternative for when testing with 1 file:
+#cat ${tempdir}${NAME}_out.vcf | bgzip -c > ${outdir}${NAME}_master.vcf.gz
 
-zcat ${outdir}${NAME}_master.vcf.gz | vcf-to-tab > ${tempdir}${NAME}_snps.tab
+#zcat ${outdir}${NAME}_master.vcf.gz | vcf-to-tab > ${tempdir}${NAME}_snps.tab
 
-./vcf_tab_to_fasta_alignment.pl -i ${tempdir}${NAME}_snps.tab > ${outdir}${NAME}_all_snps.fasta
+#/vcf_tab_to_fasta_alignment.pl -i ${tempdir}${NAME}_snps.tab > ${outdir}${NAME}_all_snps.fasta
 
 #Make sure nectar users can access
 chmod -R 777 ${tempdir}
 chmod -R 777 ${outdir}
 
-printf "Pipeline finished. Please check ${tempdir} and delete if not needed."
+printf("Pipeline finished. Please check ${tempdir} and delete if not needed.")
