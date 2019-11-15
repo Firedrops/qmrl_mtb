@@ -1,4 +1,4 @@
-FROM continuumio/anaconda
+FROM continuumio/miniconda3
 LABEL maintainer="Larry Cai <larrycai.jpl@gmail.com>"
 
 #Install various dependencies. I am not sure that all of them are needed, just cloned all for now to save time.
@@ -79,4 +79,4 @@ COPY pipe.sh vcf_filter_module.py vcf_tab_to_fasta_alignment.pl ./
 #Make executable
 RUN chmod +x /pipe.sh /vcf_filter_module.py /vcf_tab_to_fasta_alignment.pl
 
-ENTRYPOINT ["./pipe.sh"]
+ENTRYPOINT ["/pipe.sh"]
