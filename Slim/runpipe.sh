@@ -9,6 +9,4 @@
 n=$SLURM_ARRAY_TASK_ID
 nme=$(head -n $n filesin.txt | tail -1)
 
-docker run -it --rm -v /Backup/Data/Projects/PNG_TB/:/data/ qimr_slim /data/ $nme /data/H37Rv_refe /data/temp /data/out
-
-   
+docker run -it --rm -v /Backup/Data/Projects/PNG_TB/:/data/ dockersubtest/qimr_mtb:slim /data/ $nme /data/H37Rv_refe /data/temp /data/out
