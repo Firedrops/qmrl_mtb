@@ -73,13 +73,12 @@ vcftools --vcf ${outdir}${NAME}_filtered.vcf --out ${tempdir}${NAME} --recode --
 
 #This command is to be run when all pairs have been processed, using data from all of them. WIP.
 
-#for ${indir}${NAME} in ${indir}${NAME}s_filtered.vcf;do for sample in `bcftools view -h $${indir}${NAME} | grep "^#CHROM" | cut  -f10-`; do bcftools view -c1 -s $sample -o ${${indir}${NAME}/.vcf*/.$sample.vcf} $${indir}${NAME};done;done
-## shortcut alternative for when testing with 1 file:
-#bcftools view -c1 -s ${NAME} -o ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}.recode.vcf
+bcftools view -h ${tempdir}${NAME} | grep "^#CHROM" | cut -f10-
+bcftools view -c1 -s ${NAME} -o ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}.recode.vcf
+
+python vcf_filter_module.py 9 ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}_out.vcf
 
 #Commands below are to be run on the file generated in the previous step.
-#python vcf_filter_module.py 9 ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}_out.vcf
-
 #gatk3 -T CombineVariants -R /data/reference.fasta -–variant *.out.vcf -o master.vcf -genotypeMergeOptions UNIQUIFY
 ## shortcut alternative for when testing with 1 file:
 #cat ${tempdir}${NAME}_out.vcf | bgzip -c > ${outdir}${NAME}_master.vcf.gz
