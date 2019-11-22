@@ -7,6 +7,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32000MB
 DEBUG=0
+
 if [ -z ${SLURM_ARRAY_TASK_ID+x} ]; then 
 	echo "SLURM_ARRAY_TASK_ID is unset, setting it to 1";
         export SLURM_ARRAY_TASK_ID=1	
@@ -22,7 +23,13 @@ outputline=$(readlink -f $pwd/out)
 nme=$(ls ${pwd}/data | grep _R1.fastq.gz | sort | head -n $n  | tail -1 | cut -f 1 -d '_')
 echo "running "$nme
 
+docker images | grep slim | tr -s ' '  | cut -f 3 -d ' '  | xargs docker image rm
 
+#THIS ASSUMES THERE IS A DOCKER SUBDIRECTOR TO BUILD THE DOCKER (IT IS A SYMBOLIC LINK TO Slim/ subdirectory
+cd docker/
+docker build -t qimr_slim .
+cd $pwd
+#docker pull dockersubtest/qimr_mtb:slim
 
 if [[ $DEBUG == 1 ]]; then
 	##USE FOLLOWING COMMAND TO LOAD DOCKER IMAGE WITHOUT RUNNING SCRIPT FOR DEBUGGING
