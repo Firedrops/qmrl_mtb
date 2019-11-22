@@ -45,6 +45,16 @@ else
   picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict
 fi
 
+printf "Copying *.fasta.dict to *.dict so that both are available.\n"
+if [ -f "${reference}.dict" ]
+then
+	printf "*.dict found, skipping copying step.\n"
+else
+	printf "*.dict not found, proceeding with copying dictionary.\n"
+  printf "picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict\n"
+  cp ${reference}.fasta.dict ${reference}.dict
+fi
+
 #make unique temporary and output directories
 mkdir $tempdir
 mkdir $outdir
