@@ -36,13 +36,13 @@ else
 fi
 
 printf "Checking for picard dictionary.\n"
-if [ -f "${reference}.dict" ]
+if [ -f "${reference}.fasta.dict" ]
 then
 	printf "dictionary found, skipping generation step.\n"
 else
 	printf "dictionary not found, proceeding with generating dictionary.\n"
-  printf "picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.dict\n"
-  picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.dict
+  printf "picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict\n"
+  picard CreateSequenceDictionary R=${reference}.fasta O=${reference}.fasta.dict
 fi
 
 printf "Copying *.fasta.dict to *.dict so that both are available.\n"
