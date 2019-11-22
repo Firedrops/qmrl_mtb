@@ -16,8 +16,7 @@ else
 fi
 n=$SLURM_ARRAY_TASK_ID
 pwd=$(pwd)
-mkdir -p ${pwd}/out/temp
-mkdir -p ${pwd}/out/out
+mkdir -p ${pwd}/out
 dataline=$(readlink -f $pwd/data)
 outputline=$(readlink -f $pwd/out)
 nme=$(ls ${pwd}/data | grep _R1.fastq.gz | sort | head -n $n  | tail -1 | cut -f 1 -d '_')
