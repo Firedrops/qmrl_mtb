@@ -1,5 +1,11 @@
+#!/bin/bash
+#SBATCH --job-name=TBpipe
+#SBATCH --output=TBpipe.%j.stdout
+#SBATCH --error=TBpipe.%j.stderr
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=32000MB	#SBATCH --mem=32000MB
+#SBATCH --mem=32000MB
 
 n=$SLURM_ARRAY_TASK_ID
 pwd=$(pwd)
