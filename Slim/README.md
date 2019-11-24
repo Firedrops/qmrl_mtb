@@ -5,7 +5,7 @@
   ```
 ls /home/larry/png_mtb | grep _R1.fastq | cut -d _ -f 1 > /home/larry/png_mtb/filesin.txt
 n=$(wc -l /home/larry/png_mtb/filesin.txt)
-sbatch --array 1-3 /home/larry/qimr_mtb/Slim/runpipe.sh
+sbatch --array 1-n /home/larry/qimr_mtb/Slim/runpipe.sh
 
   ```
 
