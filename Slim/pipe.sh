@@ -79,14 +79,16 @@ gatk3 -T UnifiedGenotyper -R ${reference}.fasta -I ${outdir}${NAME}_dup_alig.bam
 
 gatk3 -T VariantFiltration -R ${reference}.fasta -V ${outdir}${NAME}.vcf --filterExpression "((DP-MQ0)<10) || ((MQ0/(1.0*DP))>=0.8) || (ABHom <0.8) || (Dels >0.5) || (QUAL > 90)" --filterName LowConfidence -o ${outdir}${NAME}_filtered.vcf
 
-vcftools --vcf ${outdir}${NAME}_filtered.vcf --out ${tempdir}${NAME} --recode --keep-INFO-all
+
+
+#vcftools --vcf ${outdir}${NAME}_filtered.vcf --out ${tempdir}${NAME} --recode --keep-INFO-all
 
 #This command is to be run when all pairs have been processed, using data from all of them. WIP.
 
-bcftools view -h ${tempdir}${NAME} | grep "^#CHROM" | cut -f10-
-bcftools view -c1 -s ${NAME} -o ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}.recode.vcf
+#bcftools view -h ${tempdir}${NAME} | grep "^#CHROM" | cut -f10-
+#bcftools view -c1 -s ${NAME} -o ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}.recode.vcf
 
-python vcf_filter_module.py 9 ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}_out.vcf
+#python vcf_filter_module.py 9 ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}_out.vcf
 
 #Commands below are to be run on the file generated in the previous step.
 #gatk3 -T CombineVariants -R /data/reference.fasta -–variant *.out.vcf -o master.vcf -genotypeMergeOptions UNIQUIFY
