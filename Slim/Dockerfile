@@ -73,11 +73,10 @@ ENV PERL5LIB=/vcftools/src/perl/
 RUN mkdir /data
 
 #Copy scripts
-COPY pipe.sh vcf_filter_module.py vcf_tab_to_fasta_alignment.pl ./
-COPY pipe.sh /usr/local/bin/ 
+COPY pipe.sh pipe2.sh vcf_filter_module.py vcf_tab_to_fasta_alignment.pl ./
 
 #Make executable
-RUN chmod +x /usr/local/bin/pipe.sh /pipe.sh /vcf_filter_module.py /vcf_tab_to_fasta_alignment.pl
+RUN chmod +x /pipe.sh /pipe2.sh /vcf_filter_module.py /vcf_tab_to_fasta_alignment.pl
 
 WORKDIR /
 ENTRYPOINT ["./pipe.sh"]
