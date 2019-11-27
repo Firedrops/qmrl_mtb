@@ -1,8 +1,9 @@
 #!/bin/bash
-#Example usage: ./pipe.sh /data/ /data/H37Rv_refe /data/temp /data/out
+#Example usage: docker run -it --rm --entrypoint /pipe2.sh -v /home/lcoin/nextflow/data:/data/ -v /home/lcoin/nextflow/out:/out/ qimr_slim /data/ /data/H37Rv_refe /out/temp /out/out
 
 #establishes variables
 DATE=$(date +"%Y%m%d")
+NME=$(pwd | rev | cut -f 1 -d '/' | rev)
 NUM=$(ls /out/out_*/*_dup_alig.bam | wc -l )
 NAME=${NME}_${DATE}_${NUM}
 input=$(ls /out/out_*/*_dup_alig.bam)
