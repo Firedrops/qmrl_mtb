@@ -3,9 +3,9 @@
 
 #establishes variables
 DATE=$(date +"%Y%m%d")
-NUM=$(ls data/out_*/*_dup_alig.bam | wc -l )
+NUM=$(ls /out/out_*/*_dup_alig.bam | wc -l )
 NAME=${NME}_${DATE}_${NUM}
-input=$(ls data/out_*/*_dup_alig.bam)
+input=$(ls /out/out_*/*_dup_alig.bam)
 
 indir=$1
 shift
@@ -16,9 +16,9 @@ shift
 outdir=$1_${NAME}/
 shift
 
-ls /data/out_*/*_dup_alig.bam > /data/bams.list
+ls /out/out_*/*_dup_alig.bam > /out/bams.list
 
-gatk3 -T UnifiedGenotyper -R ${reference}.fasta -I /data/bams.list -A AlleleBalance -pnrm EXACT_GENERAL_PLOIDY -ploidy 1 -glm SNP -o ${outdir}${NAME}.vcf
+gatk3 -T UnifiedGenotyper -R ${reference}.fasta -I /out/bams.list -A AlleleBalance -pnrm EXACT_GENERAL_PLOIDY -ploidy 1 -glm SNP -o ${outdir}${NAME}.vcf
 
 gatk3 -T VariantFiltration -R ${reference}.fasta -V ${outdir}${NAME}.vcf --filterExpression "((DP-MQ0)<10) || ((MQ0/(1.0*DP))>=0.8) || (ABHom <0.8) || (Dels >0.5) || (QUAL > 90)" --filterName LowConfidence -o ${outdir}${NAME}_filtered.vcf
 
