@@ -4,7 +4,7 @@
 #establishes variables
 DATE=$(date +"%Y%m%d")
 NUM=$(ls out/out_*/*_dup_alig.bam | wc -l )
-NAME=${NME}_${DATE}_${NUM} (edited) 
+NAME=${NME}_${DATE}_${NUM}
 input=$(ls out/out_*/*_dup_alig.bam)
 
 indir=$1
@@ -27,7 +27,6 @@ vcftools --vcf ${outdir}${NAME}_filtered.vcf --out ${tempdir}${NAME} --recode --
 python vcf_filter_module.py 9 ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}_out.vcf
 
 gatk3 -T CombineVariants -R ${reference}.fasta -–variant ${tempdir}${NAME}_out.vcf -o ${outdir}${NAME}_master.vcf -genotypeMergeOptions UNIQUIFY
-
 
 zcat ${outdir}${NAME}_master.vcf | vcf-to-tab > ${tempdir}${NAME}_snps.tab
 
