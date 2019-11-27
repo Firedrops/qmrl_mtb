@@ -3,9 +3,8 @@
 
 #establishes variables
 DATE=$(date +"%Y%m%d")
-NME=$(pwd | rev | cut -f 1 -d '/' | rev)
 NUM=$(ls /out/out_*/*_dup_alig.bam | wc -l )
-NAME=${NME}_${DATE}_${NUM}
+NAME=${DATE}_${NUM}
 input=$(ls /out/out_*/*_dup_alig.bam)
 
 indir=$1
