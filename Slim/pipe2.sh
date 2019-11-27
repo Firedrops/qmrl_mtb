@@ -2,23 +2,23 @@
 #Example usage: docker run -it --rm --entrypoint /pipe2.sh -v /home/lcoin/nextflow/data:/data/ -v /home/lcoin/nextflow/out:/out/ qimr_slim /data/ /data/H37Rv_refe /out/temp /out/out
 
 #establishes variables
+find /out -name *_dup_alig.bam > /out/bams.list
 DATE=$(date +"%Y%m%d")
-NUM=$(ls /out/out_*/*_dup_alig.bam | wc -l )
+NUM=$(wc -l /out/bams.list  | cut -f 1 -d ' ')
 NAME=${DATE}_${NUM}
-input=$(ls /out/out_*/*_dup_alig.bam)
+#input=$(ls /out/out_*/*_dup_alig.bam)
 
 indir=$1
 shift
 reference=$1
 shift
-tempdir=$1_${NAME}/
+tempdir=${indir}_${NAME}/
 shift
-outdir=$1_${NAME}/
+outdir=${indir}_${NAME}/
 shift
 
 
 
-ls /out/out_*/*_dup_alig.bam > /out/bams.list
 
 mkdir ${outdir}
 
