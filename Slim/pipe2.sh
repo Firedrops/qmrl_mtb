@@ -31,7 +31,7 @@ gatk3 -T VariantFiltration -R ${reference}.fasta -V ${outdir}${NAME}.vcf --filte
 
 vcftools --vcf ${outdir}${NAME}_filtered.vcf --out ${tempdir}${NAME} --recode --keep-INFO-all
 
-python vcf_filter_module.py 9 ${tempdir}${NAME}_in.vcf ${tempdir}${NAME}_master.vcf
+python vcf_filter_module.py 9 ${tempdir}${NAME}_filtered.vcf ${tempdir}${NAME}_master.vcf
 
 #Currently redundant. Note: Rename ${tempdir}${NAME}_master.vcf to ${tempdir}${NAME}_out.vcf above in line 34 if this command is re-instated.
 #gatk3 -T CombineVariants -R ${reference}.fasta -–variant ${tempdir}${NAME}_out.vcf -o ${outdir}${NAME}_master.vcf -genotypeMergeOptions UNIQUIFY
