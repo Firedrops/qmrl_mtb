@@ -15,9 +15,11 @@ sbatch --array 1-n /home/larry/qimr_mtb/Slim/runpipe2.sh
 # Refreshing Docker on slurm:
 Due to some bugs with dockerhub, pulling a build from dockerhub results in errors.
 1. Commit on github, trigger manual build on dockerhub.
-2. Build on own PC/nectar `docker build -t qimr_slim .`
-3. Run an interactive container in detached mode `docker run -itd --entrypoint /bin/bash qimr_slim`
-4. Check for container id `docker container ls`
-5. Commit built image to dockerhub image `docker commit ae83b dockersubtest/qimr_mtb:slim`
-6. Push built image `docker push dockersubtest/qimr_mtb:slim`
-7. Spin down docker container `docker stop ae8eb`
+2. Navigate to `<home>/qimr_mtb/Slim` folder OR adjust below path arguments accordingly.
+3. Build on own PC/nectar `docker build -t qimr_slim .`
+4. Run an interactive container in detached mode `docker run -itd --entrypoint /bin/bash qimr_slim`
+5. Check for container ID `docker container ls`. For example, it is `ae83ba82s`.
+6. Commit built image to dockerhub image `docker commit ae83 dockersubtest/qimr_mtb:slim`
+7. Push built image `docker push dockersubtest/qimr_mtb:slim`
+8. Spin down docker container `docker stop ae8eb`
+9. Clear legacy containers on slurm `sbatch --array 1-5 clearslurm.sh`
