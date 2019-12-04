@@ -78,5 +78,8 @@ COPY pipe.sh pipe2.sh vcf_filter_module.py vcf_tab_to_fasta_alignment.pl ./
 #Make executable
 RUN chmod +x /pipe.sh /pipe2.sh /vcf_filter_module.py /vcf_tab_to_fasta_alignment.pl
 
+#Report Version
+RUN echo "Version 2019_12_04, fix pipe2 vcf mismatch"
+
 WORKDIR /
 ENTRYPOINT ["./pipe.sh"]
