@@ -7,4 +7,4 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32000MB
 
-docker image rm -f dockersubtest/qimr_mtb:Slim
+docker image rm -f dockersubtest/qimr_mtb:slim
