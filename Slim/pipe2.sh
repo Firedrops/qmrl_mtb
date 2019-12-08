@@ -26,17 +26,35 @@ gatk3 -T UnifiedGenotyper -R ${reference}.fasta -I /out/bams.list -A AlleleBalan
 
 gatk3 -T VariantFiltration -R ${reference}.fasta -V ${outdir}${NAME}.vcf --filterExpression "((DP-MQ0)<10) || ((MQ0/(1.0*DP))>=0.8) || (ABHom <0.8) || (Dels >0.5) || (QUAL > 90)" --filterName LowConfidence -o ${outdir}${NAME}_filtered.vcf
 
+pwd=$(pwd)
+cd outdir
+
+## this outputs as out_recode.vcf
+ vcftools --vcf ${NAME}_filtered.vcf  --recode --keep-INFO-all --remove-filtered-all
+
 #Currently redundant
-#bcftools view -h ${outdir}${NAME}_filtered.vcf | grep "^#CHROM" | cut -f10-
+##FOLLOWING COMMAND SHOULD 
 
-vcftools --vcf ${outdir}${NAME}_filtered.vcf --out ${tempdir}${NAME} --recode --keep-INFO-all
+file="out.recode.vcf"
+for sample in $(bcftools view -h $file | grep "^#CHROM" | cut -f10-); do  bcftools view -c1 -s $sample -o ${file/.vcf*/.$sample.vcf} $file; done
+rm $file
 
-python vcf_filter_module.py 9 ${tempdir}${NAME}_filtered.vcf ${tempdir}${NAME}_master.vcf
+for file1 in  out.recode.*vcf; do 
 
+#python vcf_filter_module.py 9 ${tempdir}${NAME}_filtered.vcf ${tempdir}${NAME}_master.vcf
+outfile1=${file1}_master.vcf
+python ${pwd}/vcf_filter_module.py 12 ${file1} ${outfile1}
 #Currently redundant. Note: Rename ${tempdir}${NAME}_master.vcf to ${tempdir}${NAME}_out.vcf above in line 34 if this command is re-instated.
-#gatk3 -T CombineVariants -R ${reference}.fasta -–variant ${tempdir}${NAME}_out.vcf -o ${outdir}${NAME}_master.vcf -genotypeMergeOptions UNIQUIFY
+done
 
-zcat ${outdir}${NAME}_master.vcf | vcf-to-tab > ${tempdir}${NAME}_snps.tab
+
+ 
+ a=$(ls out.recode.*_master.vcf |  sed 's/out.recode/--variant out.recode/g')
+
+gatk3 -T CombineVariants -R ${pwd}/${reference}.fasta  ${a} -o ${NAME}_master2.vcf -genotypeMergeOptions UNIQUIFY
+
+cd $pwd
+cat ${outdir}${NAME}_master2.vcf | vcf-to-tab > ${tempdir}${NAME}_snps.tab
 
 perl /vcf_tab_to_fasta_alignment.pl -i ${tempdir}${NAME}_snps.tab > ${outdir}${NAME}_all_snps.fasta
 
