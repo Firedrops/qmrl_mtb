@@ -27,7 +27,7 @@ gatk3 -T UnifiedGenotyper -R ${reference}.fasta -I /out/bams.list -A AlleleBalan
 gatk3 -T VariantFiltration -R ${reference}.fasta -V ${outdir}${NAME}.vcf --filterExpression "((DP-MQ0)<10) || ((MQ0/(1.0*DP))>=0.8) || (ABHom <0.8) || (Dels >0.5) || (QUAL > 90)" --filterName LowConfidence -o ${outdir}${NAME}_filtered.vcf
 
 pwd=$(pwd)
-cd outdir
+cd $outdir
 
 ## this outputs as out_recode.vcf
  vcftools --vcf ${NAME}_filtered.vcf  --recode --keep-INFO-all --remove-filtered-all
@@ -37,9 +37,8 @@ cd outdir
 
 file="out.recode.vcf"
 for sample in $(bcftools view -h $file | grep "^#CHROM" | cut -f10-); do  bcftools view -c1 -s $sample -o ${file/.vcf*/.$sample.vcf} $file; done
-rm $file
 
-for file1 in  out.recode.*vcf; do 
+for file1 in $(ls out.recode.*vcf | grep -v 'master.vcf'  | grep -v out.recode.vcf); do
 
 #python vcf_filter_module.py 9 ${tempdir}${NAME}_filtered.vcf ${tempdir}${NAME}_master.vcf
 outfile1=${file1}_master.vcf
@@ -53,11 +52,15 @@ done
 
 gatk3 -T CombineVariants -R ${pwd}/${reference}.fasta  ${a} -o ${NAME}_master2.vcf -genotypeMergeOptions UNIQUIFY
 
+
+cat ${outdir}${NAME}_master2.vcf | vcf-to-tab > ${NAME}_snps.tab
+
+#FOLLOWING LINE REPLACES DOT WITH REFERENCE FROM THAT POSITION
+while read line; do ref=$(echo $line | cut -f 3 -d ' '); echo $line | sed "s/\.variant//g" | sed "s/\./$ref/g"; done <  ${NAME}_snps.tab  > ${NAME}_snps1.tab
+sed 's/ /\t/g' ${NAME}_snps1.tab  > ${NAME}_snps2.tab
+ 
+perl ${pwd}/vcf_tab_to_fasta_alignment.pl -i ${NAME}_snps2.tab > ${NAME}_all_snps.fasta
 cd $pwd
-cat ${outdir}${NAME}_master2.vcf | vcf-to-tab > ${tempdir}${NAME}_snps.tab
-
-perl /vcf_tab_to_fasta_alignment.pl -i ${tempdir}${NAME}_snps.tab > ${outdir}${NAME}_all_snps.fasta
-
 #Make sure nectar users can access
 chmod -R 777 ${tempdir}
 chmod -R 777 ${outdir}
