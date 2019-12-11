@@ -66,6 +66,13 @@ RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && m
 #Install Trimmomatic
 RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ && make && make check && make install && cd /
 
+#Install SnpEff (SnpSift included)
+RUN wget http://sourceforge.net/projects/snpeff/files/snpEff_latest_core.zip
+RUN unzip snpEff_latest_core.zip && rm snpEff_latest_core.zip
+ENV PATH $PATH:/snpEff
+#Optional: The database directory can be changed in snpEff.config. Default is in the installation folder (./data/).
+#See: http://snpeff.sourceforge.net for more information
+
 #Set PERL thingy for vcftools
 ENV PERL5LIB=/vcftools/src/perl/
 
