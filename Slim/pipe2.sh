@@ -12,10 +12,12 @@ indir=$1
 shift
 reference=$1
 shift
+##IF DEBUGGING
+#NAME=20191201_96; indir="data/"; reference="H37Rv"; tempdir=${indir}_${NAME}/ ; outdir=${indir}_${NAME}/
 tempdir=${indir}_${NAME}/
-shift
+#shift
 outdir=${indir}_${NAME}/
-shift
+#shift
 
 
 
@@ -53,7 +55,15 @@ done
 gatk3 -T CombineVariants -R ${pwd}/${reference}.fasta  ${a} -o ${NAME}_master2.vcf -genotypeMergeOptions UNIQUIFY
 
 
-cat ${outdir}${NAME}_master2.vcf | vcf-to-tab > ${NAME}_snps.tab
+cat ${NAME}_master2.vcf | vcf-to-tab > ${NAME}_snps.tab
+
+
+##THIS IS ATTEMPTING TO RUN SNPEFF
+##NOTE THE SNPEFF COMMAND DOES NOT SEEM TO BE WORKING
+cat ${NAME}_master2.vcf | sed -e 's/NC_000962.3/NC_000962/' >${NAME}_master3.vcf
+java -jar  /snpEff/snpEff.jar -c ../snpEff.config -v ../m_tuberculosis_H37Rv > ${NAME}_master3.vcf > ${NAME}_master4.vcf
+
+
 
 #FOLLOWING LINE REPLACES DOT WITH REFERENCE FROM THAT POSITION
 while read line; do ref=$(echo $line | cut -f 3 -d ' '); echo $line | sed "s/\.variant//g" | sed "s/\./$ref/g"; done <  ${NAME}_snps.tab  > ${NAME}_snps1.tab
@@ -61,6 +71,7 @@ sed 's/ /\t/g' ${NAME}_snps1.tab  > ${NAME}_snps2.tab
  
 perl ${pwd}/vcf_tab_to_fasta_alignment.pl -i ${NAME}_snps2.tab > ${NAME}_all_snps.fasta
 cd $pwd
+
 #Make sure nectar users can access
 chmod -R 777 ${tempdir}
 chmod -R 777 ${outdir}
