@@ -9,3 +9,4 @@ docker push dockersubtest/qimr_mtb:slim
 docker stop $curr_docker
 unset curr_docker
 sbatch --array 1-5 clearslurm.sh
+cd ..
