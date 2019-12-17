@@ -66,8 +66,9 @@ RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && m
 #Install Trimmomatic
 RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ && make && make check && make install && cd /
 
-#Install SnpEff (SnpSift included)
-RUN wget http://sourceforge.net/projects/snpeff/files/snpEff_latest_core.zip
+#Install SnpEff v4.1l (SnpSift included) outdated but for compatibility
+#RUN wget http://sourceforge.net/projects/snpeff/files/snpEff_latest_core.zip
+RUN curl -s "https://api.github.com/repos/pcingola/SnpEff/tags" | grep v4.1l | grep zip | head -n 1 | awk '{print $2}' | xargs curl -L -o /snpEff_latest_core.zip
 RUN unzip snpEff_latest_core.zip && rm snpEff_latest_core.zip
 ENV PATH $PATH:/snpEff
 #Optional: The database directory can be changed in snpEff.config. Default is in the installation folder (./data/).
@@ -86,7 +87,7 @@ COPY pipe.sh pipe2.sh vcf_filter_module.py vcf_tab_to_fasta_alignment.pl ./
 RUN chmod +x /pipe.sh /pipe2.sh /vcf_filter_module.py /vcf_tab_to_fasta_alignment.pl
 
 #Report Version
-RUN echo "Version 2019_12_04, fix pipe2 vcf mismatch"
+RUN echo "Version 2019_17_12, revert snpEff to version 4.3l"
 
 WORKDIR /
 ENTRYPOINT ["./pipe.sh"]
