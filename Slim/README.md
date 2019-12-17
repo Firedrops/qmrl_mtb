@@ -14,6 +14,7 @@ sbatch --array 1-n /home/larry/qimr_mtb/Slim/runpipe2.sh
 
 # Refreshing Docker on slurm:
 Due to some bugs with dockerhub, pulling a build from dockerhub results in errors.
+
 Auto: run `fullupdate.sh` in root git folder.
 
 Manual:
