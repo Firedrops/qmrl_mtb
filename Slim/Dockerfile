@@ -68,8 +68,8 @@ RUN git clone https://github.com/timflutre/trimmomatic.git && cd trimmomatic/ &&
 
 #Install SnpEff v4.1l (SnpSift included) outdated but for compatibility
 #RUN wget http://sourceforge.net/projects/snpeff/files/snpEff_latest_core.zip
-RUN curl -s "https://api.github.com/repos/pcingola/SnpEff/tags" | grep v4.1l | grep zip | head -n 1 | awk '{print $2}' | xargs curl -L -o /snpEff_latest_core.zip
-RUN unzip snpEff_latest_core.zip && rm snpEff_latest_core.zip
+RUN curl -L https://api.github.com/repos/pcingola/SnpEff/zipball/v4.1l -o /snpEff-v4.1l.zip
+RUN unzip snpEff-v4.1l.zip && rm snpEff-v4.1l.zip && mv SnpEff-4.1l SnpEff
 ENV PATH $PATH:/snpEff
 #Optional: The database directory can be changed in snpEff.config. Default is in the installation folder (./data/).
 #See: http://snpeff.sourceforge.net for more information
