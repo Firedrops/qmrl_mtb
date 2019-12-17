@@ -59,9 +59,9 @@ cat ${NAME}_master2.vcf | vcf-to-tab > ${NAME}_snps.tab
 
 
 #THIS IS ATTEMPTING TO RUN SNPEFF
-cat ${NAME}_master2.vcf | sed -e 's/NC_000962.3/NC_000962/' >${NAME}_master3.vcf
-java -jar /snpEff.jar -c snpEff.config -v ${indir}/m_tuberculosis_H37Rv ${indir}_${NAME}/test.vcf > ${indir}_${NAME}/test2.vcf
-#java -jar /snpEff.jar -c snpEff.config -v m_tuberculosis_H37Rv /home/lcoin/nextflow/data/_20191201_96/test.vcf > /home/lcoin/nextflow/data/_20191201_96/test2.vcf
+cat ${NAME}_master2.vcf | sed -e 's/NC_000962.3/NC_000962/' > ${NAME}_master3.vcf
+java -jar /SnpEff.jar -c snpEff.config -v ${indir}/m_tuberculosis_H37Rv ${NAME}_master2.vcf > ${NAME}_test3.vcf
+#java -jar /SnpEff.jar -c snpEff.config -v m_tuberculosis_H37Rv /home/lcoin/nextflow/data/_20191201_96/test.vcf > /home/lcoin/nextflow/data/_20191201_96/test2.vcf
 
 #FOLLOWING LINE REPLACES DOT WITH REFERENCE FROM THAT POSITION
 while read line; do ref=$(echo $line | cut -f 3 -d ' '); echo $line | sed "s/\.variant//g" | sed "s/\./$ref/g"; done <  ${NAME}_snps.tab  > ${NAME}_snps1.tab
