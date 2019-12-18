@@ -14,6 +14,10 @@ sbatch --array 1-n /home/larry/qimr_mtb/Slim/runpipe2.sh
 
 # Refreshing Docker on slurm:
 Due to some bugs with dockerhub, pulling a build from dockerhub results in errors.
+
+Auto: run `fullupdate.sh` in root git folder.
+
+Manual:
 1. Commit on github, trigger manual build on dockerhub.
 2. Navigate to `<home>/qimr_mtb/Slim` folder OR adjust below path arguments accordingly.
 3. Build on own PC/nectar `docker build -t qimr_slim .`

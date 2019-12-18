@@ -71,8 +71,7 @@ cat ${NAME}_master2.vcf | sed -e 's/NC_000962.3/NC_000962/' > ${NAME}_master3.vc
 
 cd $pwd
 
-#java -jar /snpEff.jar -c snpEff.config -v ${indir}/m_tuberculosis_H37Rv ${indir}_${NAME}/test.vcf > ${indir}_${NAME}/test2.vcf
-#java -jar  /snpEff/snpEff.jar -c snpEff.config -v  m_tuberculosis_H37Rv  ${outdir}/${NAME}_master3.vcf > ${outdir}${NAME}_master4.vcf
+
 #should fix following line to but snpEff.jar and snpEff.config in docker image
 java -jar  /data/snpEff.jar -c /data/snpEff.config -v  m_tuberculosis_H37Rv  ${outdir}/${NAME}_master3.vcf > ${outdir}/${NAME}_master4.vcf
 
