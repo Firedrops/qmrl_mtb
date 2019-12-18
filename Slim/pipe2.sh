@@ -13,7 +13,7 @@ shift
 reference=$1
 shift
 ##IF DEBUGGING
-#NAME=20191201_96; indir="data/"; reference="H37Rv"; tempdir=${indir}_${NAME}/ ; outdir=${indir}_${NAME}/
+#NAME=20191201_96; indir="data/"; reference="H37Rv"; tempdir=${indir}_${NAME}/ ; outdir=${indir}_${NAME}; 
 tempdir=${indir}_${NAME}/
 #shift
 outdir=${indir}_${NAME}/
@@ -58,17 +58,27 @@ gatk3 -T CombineVariants -R ${pwd}/${reference}.fasta  ${a} -o ${NAME}_master2.v
 cat ${NAME}_master2.vcf | vcf-to-tab > ${NAME}_snps.tab
 
 
-#THIS IS ATTEMPTING TO RUN SNPEFF
-cat ${NAME}_master2.vcf | sed -e 's/NC_000962.3/NC_000962/' >${NAME}_master3.vcf
-java -jar /snpEff.jar -c snpEff.config -v ${indir}/m_tuberculosis_H37Rv ${indir}_${NAME}/test.vcf > ${indir}_${NAME}/test2.vcf
-#java -jar /snpEff.jar -c snpEff.config -v m_tuberculosis_H37Rv /home/lcoin/nextflow/data/_20191201_96/test.vcf > /home/lcoin/nextflow/data/_20191201_96/test2.vcf
 
 #FOLLOWING LINE REPLACES DOT WITH REFERENCE FROM THAT POSITION
 while read line; do ref=$(echo $line | cut -f 3 -d ' '); echo $line | sed "s/\.variant//g" | sed "s/\./$ref/g"; done <  ${NAME}_snps.tab  > ${NAME}_snps1.tab
 sed 's/ /\t/g' ${NAME}_snps1.tab  > ${NAME}_snps2.tab
  
 perl ${pwd}/vcf_tab_to_fasta_alignment.pl -i ${NAME}_snps2.tab > ${NAME}_all_snps.fasta
+
+#THIS IS ATTEMPTING TO RUN SNPEFF
+cat ${NAME}_master2.vcf | sed -e 's/NC_000962.3/NC_000962/' > ${NAME}_master3.vcf
+
+
 cd $pwd
+
+#java -jar /snpEff.jar -c snpEff.config -v ${indir}/m_tuberculosis_H37Rv ${indir}_${NAME}/test.vcf > ${indir}_${NAME}/test2.vcf
+#java -jar  /snpEff/snpEff.jar -c snpEff.config -v  m_tuberculosis_H37Rv  ${outdir}/${NAME}_master3.vcf > ${outdir}${NAME}_master4.vcf
+#should fix following line to but snpEff.jar and snpEff.config in docker image
+java -jar  /data/snpEff.jar -c /data/snpEff.config -v  m_tuberculosis_H37Rv  ${outdir}/${NAME}_master3.vcf > ${outdir}/${NAME}_master4.vcf
+
+#java -jar /swold/snpEff/current/snpEff.jar -c snpEff.config -v  m_tuberculosis_H37Rv  ${outdir}/${NAME}_master3.vcf > ${outdir}${NAME}_master4.vcf
+#java -jar /snpEff.jar -c snpEff.config -v m_tuberculosis_H37Rv /home/lcoin/nextflow/data/_20191201_96/test.vcf > /home/lcoin/nextflow/data/_20191201_96/test2.vcf
+
 
 #Make sure nectar users can access
 chmod -R 777 ${tempdir}
