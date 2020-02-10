@@ -1,5 +1,5 @@
 #!/usr/bin/env nextflow
-/*call with nextflow run main.nf -with-docker qimr_slim */
+/*call with nextflow run main.nf -with-docker qimr_mtb:slim */
 
 /**********
  * Define the default parameters
@@ -467,3 +467,6 @@ process '2A_bwa_mem_alignment' {
 
 
 
+workflow.onComplete { 
+	println ( workflow.success ? "\nDone! Open the following report in your browser --> $params.outdir/multiqc_report.html\n" : "Oops .. something went wrong" )
+}
