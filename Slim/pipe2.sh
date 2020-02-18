@@ -75,6 +75,7 @@ cd $pwd
 #should fix following line to but snpEff.jar and snpEff.config in docker image
 java -jar  /data/snpEff.jar -c /data/snpEff.config -v  m_tuberculosis_H37Rv  ${outdir}/${NAME}_master3.vcf > ${outdir}/${NAME}_master4.vcf
 
+#Bad attempts, can ignore:
 #java -jar /swold/snpEff/current/snpEff.jar -c snpEff.config -v  m_tuberculosis_H37Rv  ${outdir}/${NAME}_master3.vcf > ${outdir}${NAME}_master4.vcf
 #java -jar /snpEff.jar -c snpEff.config -v m_tuberculosis_H37Rv /home/lcoin/nextflow/data/_20191201_96/test.vcf > /home/lcoin/nextflow/data/_20191201_96/test2.vcf
 
