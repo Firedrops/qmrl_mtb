@@ -59,7 +59,9 @@ fi
 mkdir $tempdir
 mkdir $outdir
 
+#SKIPPED
 #java -jar /trimmomatic/classes/trimmomatic.jar PE -phred33 -trimlog ${tempdir}${NAME}_log.txt ${indir}${NAME}_R1.fastq.gz ${indir}${NAME}_R2.fastq.gz ${tempdir}${NAME}_paired_R1.fastq.gz ${tempdir}${NAME}_unpaired_R1.fastq.gz ${tempdir}${NAME}_paired_R2.fastq.gz ${tempdir}${NAME}_unpaired_R2.fastq.gz ILLUMINACLIP:/trimmomatic/adapters/NexteraPE-PE.fa:2:30:10 LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:36
+#SKIPPED
 
 bwa mem -t 4 -M -R "@RG\tID:${NAME}\tSM:${NAME}\tPL:Illumina\tLB:001\tPU:001" ${reference}.fasta ${indir}${NAME}_R1.fastq.gz ${indir}${NAME}_R2.fastq.gz > ${tempdir}${NAME}.sam
 
