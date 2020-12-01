@@ -32,8 +32,7 @@ RUN conda install -c bioconda mtbseq
 
 #Download GATK3, prerequisite for mtbseq. Yes, it should be done AFTER mtbseq install.
 RUN mkdir /gatk3
-RUN wget -O /gatk3/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef.tar.bz2 -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36" --referer https://software.broadinstitute.org/gatk/download/archive 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.8-1-0-gf15c1c3ef' && \
-    gatk3-register /gatk3/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef.tar.bz2
+RUN wget -O /gatk3/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef.tar.bz2 https://storage.googleapis.com/gatk-software/package-archive/gatk/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef.tar.bz2 
 
 #Install VCFtools
 RUN git clone https://github.com/vcftools/vcftools.git && \
