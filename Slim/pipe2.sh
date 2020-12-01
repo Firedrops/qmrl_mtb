@@ -1,5 +1,5 @@
 #!/bin/bash
-#Example usage: docker run -it --rm --entrypoint /pipe2.sh -v /home/lcoin/nextflow/data:/data/ -v /home/lcoin/nextflow/out:/out/ qimr_slim /data/ /data/H37Rv_refe /out/temp /out/out
+#Example usage: docker run -it --rm --entrypoint /pipe2.sh -v /home/lcoin/nextflow/data:/data/ -v /home/lcoin/nextflow/out:/out/ qmrl_slim /data/ /data/H37Rv_refe /out/temp /out/out
 
 #establishes variables
 find /out -name *_dup_alig.bam > /out/bams.list

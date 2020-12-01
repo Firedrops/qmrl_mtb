@@ -1,6 +1,6 @@
 #2-in-1 version, default.
 #Based on Rocker's R-verse docker, with google cloud docker installed on top.
-#To run the docker: docker run -it -p 5900:5900 qimr_mtb /bin/bash
+#To run the docker: docker run -it -p 5900:5900 qmrl_mtb /bin/bash
 #From within the docker: vncserver $DISPLAY -geometry 1920x1080
 #From a vnc client (e.g. Remmina), connect via VNC protocol to: localhost:5900
 #To switch java versions: update-alternatives --config java

@@ -1,2 +1,2 @@
-docker build -t qimr_slim .
+docker build -t qmrl_slim .
 ##next step to commit this to dockerhub

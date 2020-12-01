@@ -1,9 +1,9 @@
 #!/bin/bash
 
-export DockerUsername="~/qimr_mtb/duser.txt" #path to .txt containing docker password
-export lpass="~/qimr_mtb/lpass.txt" #path to .txt containing linux password
+export DockerUsername="~/qmrl_mtb/duser.txt" #path to .txt containing docker password
+export lpass="~/qmrl_mtb/lpass.txt" #path to .txt containing linux password
 #By default, sudo password is only prompted once every 15 minutes, so I have chosen to pass it only once per if loop to simplify commands.
-export dpass="~/qimr_mtb/dpass.txt" #path to .txt containing docker password
+export dpass="~/qmrl_mtb/dpass.txt" #path to .txt containing docker password
 
 #Checks if Docker is installed
 echo "Checking if Docker is installed"
@@ -54,7 +54,7 @@ done
 sudo mkdir $HOME/dhost_mount/
 
 #Pull Docker image #WIP
-docker pull dockersubtest/qimr_mtb:latest
-docker run -it --rm -p 8787:8787 -v $HOME/dhost_mount:/dcont_mount/ qimr_mtb
+docker pull dockersubtest/qmrl_mtb:latest
+docker run -it --rm -p 8787:8787 -v $HOME/dhost_mount:/dcont_mount/ qmrl_mtb
 
 #open browser navigate to https://192.168.99.100:8787 OR http://localhost:8787

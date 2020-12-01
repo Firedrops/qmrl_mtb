@@ -1,5 +1,5 @@
 #!/usr/bin/env nextflow
-/*call with nextflow run main.nf -with-docker qimr_mtb:slim */
+/*call with nextflow run main.nf -with-docker qmrl_mtb:slim */
 
 
 /**********

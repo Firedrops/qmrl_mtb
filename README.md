@@ -1,5 +1,5 @@
-# qimr_mtb
-Pipeline for mtb analysis built for QIMR. A full list of installed tools are listed below.
+# qmrl_mtb
+Pipeline for mtb analysis built for qmrl. A full list of installed tools are listed below.
 
 Please report bugs in Issues, some software are undergoing transitions from Java8 to Java11, which requires updating of the Dockerfile. I require community feedback to alert me as I am not a regular user of this docker.
 
@@ -7,22 +7,22 @@ Please report bugs in Issues, some software are undergoing transitions from Java
 ### Written for debian-based OS. May work on similar architectures with no or minor syntax tweaks.
 #### Pull cloud build. (Not always reliable, cloud build tends to fail for such a large image.=)
 1. Set up and log in to your docker account if you haven't https://www.docker.com/
-2. Pull the image with `docker pull dockersubtest/qimr_mtb`
+2. Pull the image with `docker pull dockersubtest/qmrl_mtb`
 3. Make a shared directory, such as `mkdir ~/dhost_mount`
-4. Run the docker with `docker run -it -p 5900:5900 -p 8787:8787 -v $HOME/dhost_mount:/dcont_mount/ qimr_mtb /bin/bash`
+4. Run the docker with `docker run -it -p 5900:5900 -p 8787:8787 -v $HOME/dhost_mount:/dcont_mount/ qmrl_mtb /bin/bash`
 
 #### Local build
 1. Set up and log in to your docker account if you haven't https://www.docker.com/
 2. Ensure `git` is installed
-3. Clone this git project `git clone https://github.com/Firedrops/qimr_mtb.git` and navigate to the folder (usually ~/qimr_mtb/)
-4. Build the image `sudo docker build -t qimr_mtb .`
+3. Clone this git project `git clone https://github.com/Firedrops/qmrl_mtb.git` and navigate to the folder (usually ~/qmrl_mtb/)
+4. Build the image `sudo docker build -t qmrl_mtb .`
 5. Wait... build is expected to take about 2 hours with a docker image ~40 GB.
 6. Make a shared directory, such as `mkdir ~/dhost_mount`
-7. Run the docker with `docker run -it -p 5900:5900 -p 8787:8787 -v $HOME/dhost_mount:/dcont_mount/ qimr_mtb /bin/bash`
+7. Run the docker with `docker run -it -p 5900:5900 -p 8787:8787 -v $HOME/dhost_mount:/dcont_mount/ qmrl_mtb /bin/bash`
 
 #### To save a local copy of the image (e.g. thumbdrive)
-1. To save: `sudo docker save -o <path to directory>/qimr_mtb.docker qimr_mtb`
-2. To load: `sudo docker load -i <path to directory>/qimr_mtb.docker`
+1. To save: `sudo docker save -o <path to directory>/qmrl_mtb.docker qmrl_mtb`
+2. To load: `sudo docker load -i <path to directory>/qmrl_mtb.docker`
 Please take care to update `docker run` parameters accordingly (e.g. path of the shared directory)
 
 ### To use the GUI
@@ -60,13 +60,13 @@ Further documentation can be found [here](https://ropenscilabs.github.io/r-docke
 ### Written for debian-based OS. May work on similar architectures with no or minor syntax tweaks.
 1. Set up a docker account if you haven't https://www.docker.com/
 2. Ensure `git` is installed
-3. Clone this git project `git clone https://github.com/Firedrops/qimr_mtb.git` and navigate to the folder (usually ~/qimr_mtb/)
+3. Clone this git project `git clone https://github.com/Firedrops/qmrl_mtb.git` and navigate to the folder (usually ~/qmrl_mtb/)
 4. Open `duser.txt`, `dpass.txt`, and `lpass.txt`. Replace `placeholder` text with your docker username, docker password, and linux password, respectively.
-5. Optional: In case your working directory is not `~/qimr_mtb/`, open and edit the first few lines of `init.sh` to match your working directory.
+5. Optional: In case your working directory is not `~/qmrl_mtb/`, open and edit the first few lines of `init.sh` to match your working directory.
 6. Run `init.sh`.
   init.sh checks for existing docker installation, and installs it automatically if it is not found, and
     logs in to docker, and
-      pulls the qimr_mtb docker image, and
+      pulls the qmrl_mtb docker image, and
         creates a directory `~/dhost_mount` to share files in/out of the docker, and
           runs and and attaches user input into the docker image.
   At this point (you can see when your user input becomes `root@xx...xx`) you are inside the docker, and can use its tools.

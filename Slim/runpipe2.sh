@@ -19,8 +19,8 @@ slim=$(readlink -f $pwd/pipe2.sh  | rev | cut -f 2- -d / | rev)
 
 if [[ $DEBUG == 1 ]]; then
 	##USE FOLLOWING COMMAND TO LOAD DOCKER IMAGE WITHOUT RUNNING SCRIPT FOR DEBUGGING
-	docker run -it --entrypoint /bin/bash -v ${dataline}:/data/  -v ${outputline}:/out/ dockersubtest/qimr_mtb:slim
+	docker run -it --entrypoint /bin/bash -v ${dataline}:/data/  -v ${outputline}:/out/ dockersubtest/qmrl_mtb:slim
 else
 	#FOLLOWING COMMAND RUNS THE SCRIPT
-        docker run --rm --entrypoint /slim/pipe2.sh -v ${slim}:/slim/ -v ${dataline}:/data/ -v ${outputline}:/out/ dockersubtest/qimr_mtb:slim /data/ $nme /data/H37Rv_refe /out/temp /out/out	
+        docker run --rm --entrypoint /slim/pipe2.sh -v ${slim}:/slim/ -v ${dataline}:/data/ -v ${outputline}:/out/ dockersubtest/qmrl_mtb:slim /data/ $nme /data/H37Rv_refe /out/temp /out/out	
 fi

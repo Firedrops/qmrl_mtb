@@ -26,16 +26,16 @@ echo "running "$nme
 #docker images | grep slim | tr -s ' '  | cut -f 3 -d ' '  | xargs docker image rm
 #THIS ASSUMES THERE IS A DOCKER SUBDIRECTOR TO BUILD THE DOCKER (IT IS A SYMBOLIC LINK TO Slim/ subdirectory
 #cd docker/
-#docker build -t qimr_slim .
+#docker build -t qmrl_slim .
 #cd $pwd
-#docker pull dockersubtest/qimr_mtb:slim
+#docker pull dockersubtest/qmrl_mtb:slim
 
 if [[ $DEBUG == 1 ]]; then
 	##USE FOLLOWING COMMAND TO LOAD DOCKER IMAGE WITHOUT RUNNING SCRIPT FOR DEBUGGING
-	docker run -it --entrypoint /bin/bash -v ${dataline}:/data/  -v ${outputline}:/out/  dockersubtest/qimr_mtb:slim
+	docker run -it --entrypoint /bin/bash -v ${dataline}:/data/  -v ${outputline}:/out/  dockersubtest/qmrl_mtb:slim
 else
 	#FOLLOWING COMMAND RUNS THE SCRIPT
-	#docker run --rm -v ${pwd}/:/data/ dockersubtest/qimr_mtb:slim /data/ $nme /data/H37Rv_refe /data/temp /data/out
-        docker run --rm -v ${dataline}:/data/ -v ${outputline}:/out/ dockersubtest/qimr_mtb:slim /data/ $nme /data/H37Rv_refe /out/temp /out/out	
+	#docker run --rm -v ${pwd}/:/data/ dockersubtest/qmrl_mtb:slim /data/ $nme /data/H37Rv_refe /data/temp /data/out
+        docker run --rm -v ${dataline}:/data/ -v ${outputline}:/out/ dockersubtest/qmrl_mtb:slim /data/ $nme /data/H37Rv_refe /out/temp /out/out	
 
 fi
