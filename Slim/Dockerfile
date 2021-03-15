@@ -11,7 +11,8 @@ RUN apt-get -qqy update && apt-get install -qqy \
         lsb-release \
         openssh-client \
         git \
-        gnupg
+        gnupg \
+        autoconf
 
 RUN mkdir -p /usr/share/man/man1
 ENV IMAGE_PACKAGES="apt-utils zlib1g-dev libz-dev libbz2-dev liblzma-dev libperl-dev libcurl4-gnutls-dev libgconf-2-4 libssl-dev libncurses5-dev libopenblas-base libtool libx11-dev libxext-dev libxrender-dev libxrandr-dev libxtst-dev libxt-dev libcups2-dev libasound2-dev pkg-config build-essential perl python-pip python3-pip autoconf automake jq ruby apache2 bwa gzip kalign tar wget vim ant bedtools"
@@ -57,7 +58,7 @@ RUN git clone git://git.savannah.gnu.org/gsl.git && \
 	make install && \
 	cd /
 
-RUN git clone https://github.com/samtools/htslib.git && cd htslib && autoreconf -i && ./configure && make && make install && cd /
+RUN git clone https://github.com/samtools/htslib.git && cd htslib && autoreconf -i && git submodule update --init --recursive && ./configure && make && make install && cd /
 
 #Install bcftools
 RUN git clone git://github.com/samtools/bcftools.git && cd bcftools && make && make install && cd /
