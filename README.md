@@ -1,3 +1,5 @@
+# !!! Large parts of this section is DEPRECATED. We are now using the Slim version in the Slim folder !!!
+
 # qmrl_mtb
 Pipeline for mtb analysis built for qmrl. A full list of installed tools are listed below.
 
